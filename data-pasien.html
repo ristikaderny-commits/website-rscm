@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pasien &amp; Hasil Laboratorium - RSCM</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --active-brown-solid: #5d4e46;
+            --active-brown-border: #4c3f38;
+        }
+
+        /* Header terkunci: sejajar satu baris tanpa balok terpisah di kanan */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            transition: var(--transition);
+        }
+
+        .header-action {
+            display: none !important;
+        }
+
+        .nav-links a.nav-active-solid {
+            background: var(--grad-btn-brown, linear-gradient(135deg, #6e5c52 0%, #4b3e37 100%)) !important;
+            color: #ffffff !important;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .patient-section {
+            padding: 36px 0 64px;
+        }
+
+        .patient-top-bar {
+            background: linear-gradient(135deg, #ffffff 0%, #fcf6f2 58%, #f6e8e3 100%);
+            border: 1px solid rgba(93, 78, 70, 0.16);
+            border-radius: 20px;
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .patient-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #7f1d1d 0%, #5d4e46 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .patient-header p {
+            color: var(--text-muted);
+            font-size: 0.94rem;
+        }
+
+        .patient-table-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .patient-table-wrapper {
+            background: linear-gradient(180deg, #ffffff 0%, #fdf9f7 100%);
+            border: 1px solid rgba(93, 78, 70, 0.16);
+            border-radius: 18px;
+            overflow-x: auto;
+            box-shadow: var(--shadow);
+        }
+
+        .patient-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 980px;
+            font-size: 0.88rem;
+        }
+
+        .patient-table thead th {
+            background: #5d4e46;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+            padding: 13px 12px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .patient-table tbody tr {
+            cursor: pointer;
+            background: #ffffff;
+            transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+        }
+
+        .patient-table tbody tr:nth-child(even):not(.row-active-input):not(.row-selected-glow) {
+            background: linear-gradient(90deg, #ffffff 0%, #fcf7f4 100%);
+        }
+
+        .patient-table tbody tr:hover:not(.row-active-input):not(.row-selected-glow) {
+            background: linear-gradient(90deg, #fdf3ee 0%, #f8eae3 100%);
+        }
+
+        .patient-table tbody tr td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(93, 78, 70, 0.12);
+            color: var(--text-dark);
+            vertical-align: middle;
+        }
+
+        .patient-table tbody tr td.wrap-cell {
+            max-width: 190px;
+            white-space: normal;
+            line-height: 1.4;
+        }
+
+        /* Efek menyala saat baris diklik atau sedang diinput */
+        .patient-table tbody tr.row-selected-glow,
+        .patient-table tbody tr.row-active-input {
+            background: linear-gradient(90deg, #f9ece4 0%, #f2dfd4 55%, #fae8e2 100%) !important;
+            box-shadow: inset 5px 0 0 var(--active-brown-solid), inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 6px 16px rgba(93, 78, 70, 0.14);
+        }
+
+        .patient-table tbody tr.row-selected-glow td,
+        .patient-table tbody tr.row-active-input td {
+            background: transparent !important;
+            color: #1f1916;
+            font-weight: 500;
+            border-bottom-color: rgba(93, 78, 70, 0.25);
+        }
+
+        .patient-table tbody tr.row-selected-glow td:first-child,
+        .patient-table tbody tr.row-active-input td:first-child {
+            font-weight: 700;
+            color: var(--active-brown-solid);
+        }
+
+        .patient-empty {
+            text-align: center !important;
+            padding: 28px 16px !important;
+            color: var(--text-muted) !important;
+            font-size: 0.92rem;
+        }
+
+        .lab-action-group {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-wrap: nowrap;
+            position: relative;
+        }
+
+        .btn-lab-input {
+            background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+            color: var(--white);
+            border: none;
+            padding: 0.44rem 0.78rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(153, 27, 27, 0.2);
+        }
+
+        .btn-lab-input:hover,
+        .patient-table tbody tr.row-active-input .btn-lab-input,
+        .patient-table tbody tr.row-selected-glow .btn-lab-input {
+            background: linear-gradient(135deg, #6e5c52 0%, #4b3e37 100%);
+            color: #ffffff;
+        }
+
+        .btn-lab-print {
+            background: linear-gradient(180deg, #ffffff 0%, #faf3ef 100%);
+            color: var(--text-dark);
+            border: 1px solid rgba(93, 78, 70, 0.25);
+            padding: 0.44rem 0.78rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-lab-print:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-dark);
+            background: #fdf2ef;
+        }
+
+        .lab-more-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-lab-more {
+            background: linear-gradient(180deg, #ffffff 0%, #faf3ef 100%);
+            color: var(--text-muted);
+            border: 1px solid rgba(93, 78, 70, 0.25);
+            padding: 0.44rem 0.62rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            white-space: nowrap;
+        }
+
+        .btn-lab-more:hover,
+        .lab-more-wrapper.open .btn-lab-more {
+            border-color: var(--active-brown-solid);
+            color: var(--text-dark);
+            background: #f5ebe5;
+        }
+
+        .lab-dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 6px);
+            min-width: 148px;
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 12px 26px rgba(15, 23, 42, 0.14);
+            padding: 0.35rem;
+            z-index: 50;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .lab-more-wrapper.open .lab-dropdown-menu {
+            display: flex;
+        }
+
+        .lab-dropdown-item {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-radius: 7px;
+            padding: 0.5rem 0.65rem;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .lab-dropdown-item.clear-result {
+            color: #92400e;
+        }
+
+        .lab-dropdown-item.clear-result:hover {
+            background-color: #fef3c7;
+        }
+
+        .lab-dropdown-item.delete-patient {
+            color: #b91c1c;
+        }
+
+        .lab-dropdown-item.delete-patient:hover {
+            background-color: #fef2f2;
+        }
+
+        .lab-status-badge {
+            display: inline-block;
+            padding: 0.24rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .lab-status-done {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+        }
+
+        .lab-status-pending {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+        }
+
+        .lab-panel-card {
+            display: none;
+            background: linear-gradient(180deg, #ffffff 0%, #fdf8f5 100%);
+            border: 1px solid rgba(93, 78, 70, 0.18);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+
+        .lab-panel-card.show {
+            display: block;
+        }
+
+        .lab-eyebrow {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--primary-dark);
+            margin-bottom: 0.35rem;
+        }
+
+        .lab-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .lab-panel-header h2 {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .lab-panel-header p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .btn-reset-patient {
+            background: linear-gradient(180deg, #ffffff 0%, #f9f1ec 100%);
+            color: var(--text-dark);
+            border: 1px solid rgba(93, 78, 70, 0.28);
+            padding: 0.52rem 1rem;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-reset-patient:hover {
+            background: #f2e5dd;
+            border-color: var(--active-brown-solid);
+        }
+
+        .lab-meta-box {
+            background: linear-gradient(135deg, #fdf5f2 0%, #f7ece6 100%);
+            border: 1px solid rgba(93, 78, 70, 0.18);
+            border-radius: 14px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem 1.25rem;
+        }
+
+        .lab-meta-full {
+            grid-column: 1 / -1;
+        }
+
+        .patient-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .patient-form-group label {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .patient-form-group select,
+        .patient-form-group input {
+            padding: 0.62rem 0.8rem;
+            border: 1px solid rgba(93, 78, 70, 0.25);
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            background-color: #ffffff;
+        }
+
+        .patient-form-group select:focus,
+        .patient-form-group input:focus {
+            outline: none;
+            border-color: var(--active-brown-solid);
+            box-shadow: 0 0 0 3px rgba(93, 78, 70, 0.12);
+        }
+
+        .lab-table-wrap {
+            overflow-x: auto;
+            border: 1px solid rgba(93, 78, 70, 0.18);
+            border-radius: 14px;
+            margin-bottom: 1.5rem;
+            background: #ffffff;
+        }
+
+        .lab-input-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 780px;
+            font-size: 0.9rem;
+        }
+
+        .lab-input-table th,
+        .lab-input-table td {
+            padding: 0.8rem 0.9rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(93, 78, 70, 0.12);
+            vertical-align: middle;
+        }
+
+        .lab-input-table th {
+            background: linear-gradient(135deg, #6e5c52 0%, #4b3e37 100%);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        .lab-hasil-input {
+            width: 125px;
+            padding: 0.45rem 0.65rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            background-color: var(--white);
+        }
+
+        .lab-hasil-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .lab-hasil-input[readonly] {
+            background-color: #f1f5f9;
+            color: #334155;
+            cursor: not-allowed;
+        }
+
+        .auto-badge {
+            display: inline-block;
+            margin-left: 0.4rem;
+            padding: 0.12rem 0.45rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            background-color: #e2e8f0;
+            color: #334155;
+        }
+
+        .row-status-normal {
+            background-color: var(--white);
+        }
+
+        .row-status-high,
+        .row-status-low {
+            background-color: #ecfccb;
+            font-weight: 600;
+        }
+
+        .row-status-critical {
+            background-color: #fecdd3;
+            color: #881337;
+            font-weight: 700;
+        }
+
+        .flag-text {
+            font-weight: 700;
+        }
+
+        .flag-normal {
+            color: var(--text-muted);
+        }
+
+        .flag-high,
+        .flag-low {
+            color: #3f6212;
+        }
+
+        .flag-critical {
+            color: #be123c;
+        }
+
+        .patient-form-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-submit-patient {
+            background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+            color: #ffffff;
+            border: none;
+            padding: 0.62rem 1.25rem;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(153, 27, 27, 0.22);
+            transition: var(--transition);
+        }
+
+        .btn-submit-patient:hover {
+            background: linear-gradient(135deg, #991b1b 0%, #5c1212 100%);
+            transform: translateY(-1px);
+        }
+
+        .lab-feedback-msg {
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .lab-feedback-error {
+            color: #b91c1c;
+        }
+
+        .lab-feedback-success {
+            color: #15803d;
+        }
+
+        @media (max-width: 768px) {
+            .lab-meta-box {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fa-solid fa-hospital"></i>
+                <span>RSCM</span>
+            </div>
+            <nav class="nav-links" aria-label="Navigasi Utama">
+                <a href="index.html#beranda">Beranda</a>
+                <a href="index.html#layanan">Layanan</a>
+                <a href="index.html#visi-misi">Visi &amp; Misi</a>
+                <a href="data-pasien.html" class="active nav-active-solid">Data Pasien</a>
+                <a href="pendaftaran.html">Pendaftaran</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="patient-section">
+        <div class="container">
+
+            <!-- Konten Data Pasien Tersimpan & Input Lab -->
+            <div id="kontenDataPasien">
+                <div class="patient-top-bar">
+                    <div class="patient-header" style="margin-bottom: 0;">
+                        <h1>Data Pasien &amp; Hasil Laboratorium</h1>
+                        <p>Klik baris pasien untuk menyorot data, input hasil pemeriksaan laboratorium, dan cetak laporan RSCM.</p>
+                    </div>
+                </div>
+
+                <!-- Tabel Daftar Data Pasien Tersimpan -->
+                <h2 class="patient-table-title">Daftar Data Pasien Tersimpan</h2>
+
+                <div class="patient-table-wrapper">
+                    <table class="patient-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>No. Antrean</th>
+                                <th>No. RM</th>
+                                <th>Nama Pasien</th>
+                                <th>Usia</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Poli Rujukan</th>
+                                <th>Dokter Pengirim</th>
+                                <th>Order Lab</th>
+                                <th>Status Lab</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelPasienBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Panel Input Hasil Laboratorium -->
+                <section id="panelInputLab" class="lab-panel-card" aria-live="polite">
+                    <div class="lab-eyebrow">HASIL PEMERIKSAAN</div>
+                    <div class="lab-panel-header">
+                        <div>
+                            <h2>Input Hasil Laboratorium</h2>
+                            <p>Nilai rujukan dan nilai kritis sudah disimpan sebagai default sistem. MCV, MCH, dan MCHC dihitung otomatis (1 angka di belakang koma) dari Hemoglobin, Hematokrit, dan Eritrosit. Gunakan tanda strip (<code>-</code>) jika parameter tidak diperiksa/tidak diisi.</p>
+                        </div>
+                        <button type="button" id="btnTutupPanelLab" class="btn-reset-patient">Tutup Panel</button>
+                    </div>
+
+                    <div class="lab-meta-box">
+                        <div class="patient-form-group lab-meta-full">
+                            <label for="pilihPasienLab">Pilih Pasien dari Antrean</label>
+                            <select id="pilihPasienLab"></select>
+                        </div>
+
+                        <div class="patient-form-group">
+                            <label for="penanggungJawabLab">Penanggung Jawab</label>
+                            <input
+                                type="text"
+                                id="penanggungJawabLab"
+                                value="dr. [Nama Dokter Penanggung Jawab], Sp.PK"
+                            >
+                        </div>
+
+                        <div class="patient-form-group">
+                            <label for="petugasLaboratorium">Petugas Laboratorium</label>
+                            <input
+                                type="text"
+                                id="petugasLaboratorium"
+                                value="[Nama Petugas], S.Tr. Kes."
+                            >
+                        </div>
+                    </div>
+
+                    <div class="lab-table-wrap">
+                        <table class="lab-input-table">
+                            <thead>
+                                <tr>
+                                    <th>Pemeriksaan</th>
+                                    <th>Hasil</th>
+                                    <th>Satuan</th>
+                                    <th>Nilai Rujukan</th>
+                                    <th>Nilai Kritis</th>
+                                    <th>Metode</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelInputLabBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="patient-form-actions">
+                        <button type="button" id="btnSimpanHasilLab" class="btn-submit-patient">Simpan Hasil Lab</button>
+                        <button type="button" id="btnCetakDariPanel" class="btn-lab-print">
+                            <i class="fa-solid fa-print"></i> Cetak / Print
+                        </button>
+                        <span id="pesanStatusLab" class="lab-feedback-msg"></span>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <h3><i class="fa-solid fa-hospital"></i> RSUP NASIONAL DR CIPTO MANGUNKUSUMO</h3>
+                <p>Prima, Melesat, Menolong, Memberikan yang Terbaik</p>
+            </div>
+            <div class="footer-info">
+                <p>&copy; info@rscm.co.id</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_PENDAFTARAN = 'dataPendaftaranRSCM';
+        const STORAGE_DATA_PASIEN = 'dataPasienRSCM';
+        const STORAGE_HASIL_LAB = 'hasilLaboratoriumRSCM';
+        const STORAGE_RIWAYAT_LAB = 'riwayatPemeriksaanRSCM';
+
+        const DEFAULT_PENANGGUNG_JAWAB = 'dr. [Nama Dokter Penanggung Jawab], Sp.PK';
+        const DEFAULT_PETUGAS_LAB = '[Nama Petugas], S.Tr. Kes.';
+
+        const tabelPasienBody = document.getElementById('tabelPasienBody');
+        const panelInputLab = document.getElementById('panelInputLab');
+        const btnTutupPanelLab = document.getElementById('btnTutupPanelLab');
+        const pilihPasienLab = document.getElementById('pilihPasienLab');
+        const penanggungJawabLabInput = document.getElementById('penanggungJawabLab');
+        const petugasLaboratoriumInput = document.getElementById('petugasLaboratorium');
+        const tabelInputLabBody = document.getElementById('tabelInputLabBody');
+        const btnSimpanHasilLab = document.getElementById('btnSimpanHasilLab');
+        const btnCetakDariPanel = document.getElementById('btnCetakDariPanel');
+        const pesanStatusLab = document.getElementById('pesanStatusLab');
+
+        const PARAMETER_HEMATOLOGI_RUTIN = [
+            'Hemoglobin',
+            'Hematokrit',
+            'Eritrosit',
+            'Leukosit',
+            'Trombosit',
+            'MCV',
+            'MCH',
+            'MCHC'
+        ];
+
+        const SEMUA_PARAMETER_LAB = [
+            ...PARAMETER_HEMATOLOGI_RUTIN,
+            'Masa Protrombin (PT)',
+            'INR',
+            'APTT',
+            'D-dimer'
+        ];
+
+        const PARAMETER_TERHITUNG = new Set(['MCV', 'MCH', 'MCHC']);
+
+        const KATALOG_PARAMETER = {
+            'Hemoglobin': { satuan: 'g/dL', rujukan: '11.5 - 14.3', kritisTeks: '< 7.0 dan > 20', metode: 'Automated hematology analyzer', minNormal: 11.5, maxNormal: 14.3, critLow: 7.0, critHigh: 20 },
+            'Hematokrit': { satuan: '%', rujukan: '34 - 42', kritisTeks: '< 20 dan > 60', metode: 'Automated hematology analyzer', minNormal: 34, maxNormal: 42, critLow: 20, critHigh: 60 },
+            'Eritrosit': { satuan: 'juta/mm³', rujukan: '4.0 - 5.50', kritisTeks: '-', metode: 'Automated hematology analyzer', minNormal: 4.10, maxNormal: 5.20, critLow: null, critHigh: null },
+            'Leukosit': { satuan: '/mm³', rujukan: '3800 - 10400', kritisTeks: '< 2000 dan > 40000', metode: 'Automated hematology analyzer', minNormal: 3800, maxNormal: 10400, critLow: 2000, critHigh: 40000 },
+            'Trombosit': { satuan: '/mm³', rujukan: '187000 - 400000', kritisTeks: '< 50000 dan > 800000', metode: 'Automated hematology analyzer', minNormal: 187000, maxNormal: 400000, critLow: 50000, critHigh: 800000 },
+            'MCV': { satuan: 'fL', rujukan: '77.8 - 91.1', kritisTeks: '-', metode: 'Calculated', minNormal: 77.8, maxNormal: 91.1, critLow: null, critHigh: null },
+            'MCH': { satuan: 'pg', rujukan: '25 - 33', kritisTeks: '-', metode: 'Calculated', minNormal: 25, maxNormal: 33, critLow: null, critHigh: null },
+            'MCHC': { satuan: 'g/dL', rujukan: '32 - 36', kritisTeks: '-', metode: 'Calculated', minNormal: 32, maxNormal: 36, critLow: null, critHigh: null },
+            'Masa Protrombin (PT)': { satuan: 'detik', rujukan: '9.4 - 12.5', kritisTeks: '> 50', metode: 'Coagulometer', minNormal: 9.4, maxNormal: 12.5, critLow: null, critHigh: 50 },
+            'INR': { satuan: '', rujukan: '0.9 - 1.1', kritisTeks: '> 3.0', metode: 'Calculated', minNormal: 0.9, maxNormal: 1.1, critLow: null, critHigh: 3.0 },
+            'APTT': { satuan: 'detik', rujukan: '25 - 37', kritisTeks: '> 100', metode: 'Coagulometer', minNormal: 25, maxNormal: 37, critLow: null, critHigh: 100 },
+            'D-dimer': { satuan: 'ng/mL FEU', rujukan: '≤ 500', kritisTeks: '-', metode: 'Immunoturbidimetric', minNormal: null, maxNormal: 500, critLow: null, critHigh: null }
+        };
+
+        let daftarPasienGabungan = [];
+        let hasilLabTersimpan = JSON.parse(localStorage.getItem(STORAGE_HASIL_LAB)) || {};
+        let pasienAktifKey = null;
+        let barisTerkilikKey = null;
+
+        function sinkronkanSorotanBarisAktif() {
+            const panelTerbuka = panelInputLab.classList.contains('show');
+            tabelPasienBody.querySelectorAll('tr[data-pasien-key]').forEach((tr) => {
+                const keyBaris = tr.dataset.pasienKey;
+                const sedangDiinput = panelTerbuka && pasienAktifKey && keyBaris === pasienAktifKey;
+                const sedangDiklik = barisTerkilikKey && keyBaris === barisTerkilikKey;
+                tr.classList.toggle('row-active-input', Boolean(sedangDiinput));
+                tr.classList.toggle('row-selected-glow', Boolean(sedangDiklik));
+            });
+        }
+
+        function tutupSemuaDropdown(kecualiWrapper = null) {
+            document.querySelectorAll('.lab-more-wrapper.open').forEach((wrapper) => {
+                if (wrapper !== kecualiWrapper) {
+                    wrapper.classList.remove('open');
+                    const btn = wrapper.querySelector('.btn-lab-more');
+                    if (btn) btn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
+        function toggleDropdownAksi(event, tombol) {
+            event.stopPropagation();
+            aktifkanLinkDataPasien();
+            const wrapper = tombol.closest('.lab-more-wrapper');
+            if (!wrapper) return;
+            const akanBuka = !wrapper.classList.contains('open');
+            tutupSemuaDropdown(akanBuka ? wrapper : null);
+            wrapper.classList.toggle('open', akanBuka);
+            tombol.setAttribute('aria-expanded', akanBuka ? 'true' : 'false');
+        }
+
+        document.addEventListener('click', function () {
+            tutupSemuaDropdown();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                tutupSemuaDropdown();
+            }
+        });
+
+        function buatKeyPasien(item, index) {
+            if (item && item.pasienKey) return item.pasienKey;
+            if (item && item.nomorAntrean) return `${item.nomorAntrean}__${item.noRm || index}`;
+            if (item && item.noRm) return `RM-${item.noRm}__${index}`;
+            return `PASIEN-${index}`;
+        }
+
+        function buatBucketRiwayat(pasien) {
+            const normRm = String(pasien.noRm || '').trim().toLowerCase();
+            if (normRm && normRm !== '-') {
+                return `RM__${normRm}`;
+            }
+            return `KEY__${pasien.key}`;
+        }
+
+        function normalisasiRecordPasien(item, key, sumber) {
+            return {
+                key,
+                sumber,
+                nomorAntrean: item.nomorAntrean || '-',
+                nomorTransaksi: item.nomorTransaksi || item.nomorAntrean || '-',
+                noRm: item.noRm || '-',
+                nama: item.nama || '-',
+                tanggalLahir: item.tanggalLahir || '-',
+                umur: item.umur !== undefined && item.umur !== '' ? item.umur : '-',
+                jenisKelamin: item.jenisKelamin || '-',
+                alamat: item.alamat || '-',
+                jenisPasien: item.jenisPasien || '-',
+                nomorAsuransi: item.nomorAsuransi || '-',
+                poliRujukan: item.poliRujukan || item.tujuan || 'Laboratorium',
+                dokterPengirim: item.dokterPengirim || '-',
+                tanggalOrder: item.tanggalOrder || item.waktuDaftar || item.tanggalPeriksa || '-',
+                pemeriksaanLab: Array.isArray(item.pemeriksaanLab) ? item.pemeriksaanLab : []
+            };
+        }
+
+        function muatUlangDaftarPasien() {
+            const dataPasienMaster = JSON.parse(localStorage.getItem(STORAGE_DATA_PASIEN)) || [];
+            const dataAntreanAktif = JSON.parse(localStorage.getItem(STORAGE_PENDAFTARAN)) || [];
+            hasilLabTersimpan = JSON.parse(localStorage.getItem(STORAGE_HASIL_LAB)) || {};
+
+            const recordMap = new Map();
+
+            dataPasienMaster.forEach((item, idx) => {
+                const key = buatKeyPasien(item, idx);
+                recordMap.set(key, normalisasiRecordPasien(item, key, 'master'));
+            });
+
+            dataAntreanAktif.forEach((item, idx) => {
+                const key = buatKeyPasien(item, idx);
+                if (!recordMap.has(key)) {
+                    recordMap.set(key, normalisasiRecordPasien(item, key, 'antrean'));
+                }
+            });
+
+            daftarPasienGabungan = Array.from(recordMap.values());
+            renderDropdownPasien();
+            renderTabelPasien();
+        }
+
+        function dapatkanParameterUntukPasien(pasien) {
+            const pesanan = Array.isArray(pasien.pemeriksaanLab) ? pasien.pemeriksaanLab : [];
+            if (pesanan.length === 0) {
+                return [...SEMUA_PARAMETER_LAB];
+            }
+
+            const hasilSet = new Set();
+            pesanan.forEach((item) => {
+                if (item === 'Hematologi rutin') {
+                    PARAMETER_HEMATOLOGI_RUTIN.forEach((p) => hasilSet.add(p));
+                } else if (KATALOG_PARAMETER[item]) {
+                    hasilSet.add(item);
+                }
+            });
+
+            return hasilSet.size > 0 ? Array.from(hasilSet) : [...SEMUA_PARAMETER_LAB];
+        }
+
+        function parseAngkaDesimal(nilaiTeks) {
+            if (nilaiTeks === null || nilaiTeks === undefined) return null;
+            const bersih = String(nilaiTeks).trim().replace(',', '.');
+            if (bersih === '' || bersih === '-') return null;
+            if (!/^[+-]?\d+(\.\d+)?$/.test(bersih)) return null;
+            const angka = parseFloat(bersih);
+            return Number.isNaN(angka) ? null : angka;
+        }
+
+        function formatSatuDesimal(angka) {
+            return (Math.round(angka * 10) / 10).toFixed(1);
+        }
+
+        function hitungIndeksEritrositDariPeta(nilaiMap) {
+            const hbRaw = String(nilaiMap.get('Hemoglobin') ?? '').trim();
+            const htRaw = String(nilaiMap.get('Hematokrit') ?? '').trim();
+            const eriRaw = String(nilaiMap.get('Eritrosit') ?? '').trim();
+
+            const hbAngka = parseAngkaDesimal(hbRaw);
+            const htAngka = parseAngkaDesimal(htRaw);
+            const eriAngka = parseAngkaDesimal(eriRaw);
+
+            let mcv = '';
+            if (htRaw === '-' || eriRaw === '-') {
+                mcv = '-';
+            } else if (htAngka !== null && eriAngka !== null && eriAngka !== 0) {
+                mcv = formatSatuDesimal((htAngka * 10) / eriAngka);
+            }
+
+            let mch = '';
+            if (hbRaw === '-' || eriRaw === '-') {
+                mch = '-';
+            } else if (hbAngka !== null && eriAngka !== null && eriAngka !== 0) {
+                mch = formatSatuDesimal((hbAngka * 10) / eriAngka);
+            }
+
+            let mchc = '';
+            if (hbRaw === '-' || htRaw === '-') {
+                mchc = '-';
+            } else if (hbAngka !== null && htAngka !== null && htAngka !== 0) {
+                mchc = formatSatuDesimal((hbAngka * 100) / htAngka);
+            }
+
+            return { MCV: mcv, MCH: mch, MCHC: mchc };
+        }
+
+        function perbaruiBarisTampilan(tr, namaParam, nilaiTeks) {
+            const statusBaru = evaluasiStatusParameter(namaParam, nilaiTeks);
+            tr.className = statusBaru.rowClass;
+            const ketEl = tr.querySelector(`[data-keterangan-for="${namaParam}"]`);
+            if (ketEl) {
+                ketEl.textContent = statusBaru.label;
+                ketEl.className = `flag-text ${statusBaru.cssClass}`;
+            }
+        }
+
+        function sinkronkanIndeksOtomatisDiPanel() {
+            const barisList = Array.from(tabelInputLabBody.querySelectorAll('tr'));
+            const nilaiMap = new Map();
+
+            barisList.forEach((tr) => {
+                const param = tr.dataset.param;
+                const inp = tr.querySelector('.lab-hasil-input');
+                nilaiMap.set(param, inp ? inp.value : '');
+            });
+
+            const hasilHitung = hitungIndeksEritrositDariPeta(nilaiMap);
+
+            barisList.forEach((tr) => {
+                const param = tr.dataset.param;
+                if (PARAMETER_TERHITUNG.has(param)) {
+                    const inp = tr.querySelector('.lab-hasil-input');
+                    const nilaiBaru = hasilHitung[param] ?? '';
+                    if (inp) {
+                        inp.value = nilaiBaru;
+                    }
+                    perbaruiBarisTampilan(tr, param, nilaiBaru);
+                }
+            });
+        }
+
+        function evaluasiStatusParameter(namaParam, nilaiTeks) {
+            const trimmed = String(nilaiTeks ?? '').trim();
+            if (trimmed === '' || trimmed === '-') {
+                return { label: '-', cssClass: 'flag-normal', rowClass: 'row-status-normal' };
+            }
+
+            const angka = parseAngkaDesimal(trimmed);
+            const meta = KATALOG_PARAMETER[namaParam];
+
+            if (angka === null || !meta) {
+                return { label: 'Normal', cssClass: 'flag-normal', rowClass: 'row-status-normal' };
+            }
+
+            if (meta.critLow !== null && angka < meta.critLow) {
+                return { label: 'CRITICAL', cssClass: 'flag-critical', rowClass: 'row-status-critical' };
+            }
+            if (meta.critHigh !== null && angka > meta.critHigh) {
+                return { label: 'CRITICAL', cssClass: 'flag-critical', rowClass: 'row-status-critical' };
+            }
+
+            if (meta.minNormal !== null && angka < meta.minNormal) {
+                return { label: 'Low', cssClass: 'flag-low', rowClass: 'row-status-low' };
+            }
+            if (meta.maxNormal !== null && angka > meta.maxNormal) {
+                return { label: 'High', cssClass: 'flag-high', rowClass: 'row-status-high' };
+            }
+
+            return { label: 'Normal', cssClass: 'flag-normal', rowClass: 'row-status-normal' };
+        }
+
+        function renderTabelPasien() {
+            tabelPasienBody.innerHTML = '';
+
+            if (daftarPasienGabungan.length === 0) {
+                tabelPasienBody.innerHTML = `
+                    <tr>
+                        <td colspan="11" class="patient-empty">Belum ada data pasien tersimpan. Silakan lakukan pendaftaran terlebih dahulu.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            daftarPasienGabungan.forEach((pasien, index) => {
+                const tersimpan = hasilLabTersimpan[pasien.key];
+                const sudahLengkap = Boolean(tersimpan && Array.isArray(tersimpan.items) && tersimpan.items.length > 0);
+                const orderTeks = pasien.pemeriksaanLab.length > 0
+                    ? pasien.pemeriksaanLab.join(', ')
+                    : 'Semua parameter default';
+
+                const menuHapusHasil = sudahLengkap
+                    ? `
+                        <button type="button" class="lab-dropdown-item clear-result" onclick="hapusHasilLabPasien('${pasien.key}')">
+                            <i class="fa-solid fa-rotate-left"></i> Hapus Hasil
+                        </button>
+                    `
+                    : '';
+
+                const row = document.createElement('tr');
+                row.dataset.pasienKey = pasien.key;
+                row.addEventListener('click', function (e) {
+                    if (e.target.closest('button, a, select, input, .lab-dropdown-menu')) return;
+                    barisTerkilikKey = barisTerkilikKey === pasien.key ? null : pasien.key;
+                    sinkronkanSorotanBarisAktif();
+                });
+
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><strong>${pasien.nomorAntrean}</strong></td>
+                    <td>${pasien.noRm}</td>
+                    <td><strong>${pasien.nama}</strong></td>
+                    <td>${pasien.umur} th</td>
+                    <td>${pasien.jenisKelamin}</td>
+                    <td>${pasien.poliRujukan}</td>
+                    <td>${pasien.dokterPengirim}</td>
+                    <td class="wrap-cell">${orderTeks}</td>
+                    <td>
+                        <span class="lab-status-badge ${sudahLengkap ? 'lab-status-done' : 'lab-status-pending'}">
+                            ${sudahLengkap ? 'Tersedia' : 'Belum Diinput'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="lab-action-group">
+                            <button type="button" class="btn-lab-input" onclick="bukaPanelInputLab('${pasien.key}')">Input</button>
+                            <button type="button" class="btn-lab-print" onclick="cetakHasilPasien('${pasien.key}')">Cetak</button>
+                            <div class="lab-more-wrapper">
+                                <button type="button" class="btn-lab-more" aria-expanded="false" aria-label="Aksi lainnya untuk ${pasien.nama}" onclick="toggleDropdownAksi(event, this)">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                <div class="lab-dropdown-menu" role="menu">
+                                    ${menuHapusHasil}
+                                    <button type="button" class="lab-dropdown-item delete-patient" onclick="hapusDataPasien('${pasien.key}')">
+                                        <i class="fa-solid fa-trash"></i> Hapus
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tabelPasienBody.appendChild(row);
+            });
+
+            sinkronkanSorotanBarisAktif();
+        }
+
+        function tutupPanelJikaTerkait(key) {
+            if (panelInputLab.classList.contains('show') && pasienAktifKey === key) {
+                panelInputLab.classList.remove('show');
+                pasienAktifKey = null;
+                tabelInputLabBody.innerHTML = '';
+                pesanStatusLab.textContent = '';
+            }
+            if (barisTerkilikKey === key) {
+                barisTerkilikKey = null;
+            }
+            sinkronkanSorotanBarisAktif();
+        }
+
+        function hapusHasilLabPasien(key) {
+            tutupSemuaDropdown();
+            aktifkanLinkDataPasien();
+            const pasien = daftarPasienGabungan.find((p) => p.key === key);
+            if (!pasien) return;
+
+            const yakin = confirm(`Hapus hasil laboratorium aktif untuk pasien "${pasien.nama}" (No. RM: ${pasien.noRm})? Data pasien dan riwayat tetap dipertahankan, sedangkan status lab kembali menjadi "Belum Diinput".`);
+            if (!yakin) return;
+
+            const hasilTerbaru = JSON.parse(localStorage.getItem(STORAGE_HASIL_LAB)) || {};
+            delete hasilTerbaru[key];
+            localStorage.setItem(STORAGE_HASIL_LAB, JSON.stringify(hasilTerbaru));
+
+            muatUlangDaftarPasien();
+
+            if (panelInputLab.classList.contains('show') && pasienAktifKey === key) {
+                bukaPanelInputLab(key);
+            }
+        }
+
+        function hapusDataPasien(key) {
+            tutupSemuaDropdown();
+            aktifkanLinkDataPasien();
+            const pasien = daftarPasienGabungan.find((p) => p.key === key);
+            if (!pasien) return;
+
+            const yakin = confirm(`Hapus data pasien "${pasien.nama}" (${pasien.nomorAntrean} / No. RM: ${pasien.noRm}) beserta hasil laboratorium dan riwayatnya?`);
+            if (!yakin) return;
+
+            const dataMaster = JSON.parse(localStorage.getItem(STORAGE_DATA_PASIEN)) || [];
+            const masterSisa = dataMaster.filter((item, idx) => buatKeyPasien(item, idx) !== key);
+            localStorage.setItem(STORAGE_DATA_PASIEN, JSON.stringify(masterSisa));
+
+            const dataAntrean = JSON.parse(localStorage.getItem(STORAGE_PENDAFTARAN)) || [];
+            const antreanSisa = dataAntrean.filter((item, idx) => buatKeyPasien(item, idx) !== key);
+            localStorage.setItem(STORAGE_PENDAFTARAN, JSON.stringify(antreanSisa));
+
+            const hasilTerbaru = JSON.parse(localStorage.getItem(STORAGE_HASIL_LAB)) || {};
+            delete hasilTerbaru[key];
+            localStorage.setItem(STORAGE_HASIL_LAB, JSON.stringify(hasilTerbaru));
+
+            const riwayatTerbaru = JSON.parse(localStorage.getItem(STORAGE_RIWAYAT_LAB)) || {};
+            const bucket = buatBucketRiwayat(pasien);
+            delete riwayatTerbaru[bucket];
+            delete riwayatTerbaru[`KEY__${key}`];
+            localStorage.setItem(STORAGE_RIWAYAT_LAB, JSON.stringify(riwayatTerbaru));
+
+            tutupPanelJikaTerkait(key);
+            muatUlangDaftarPasien();
+        }
+
+        function renderDropdownPasien() {
+            pilihPasienLab.innerHTML = '';
+            if (daftarPasienGabungan.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'Belum ada pasien terdaftar';
+                pilihPasienLab.appendChild(opt);
+                return;
+            }
+
+            daftarPasienGabungan.forEach((pasien) => {
+                const opt = document.createElement('option');
+                opt.value = pasien.key;
+                opt.textContent = `${pasien.nomorAntrean} — ${pasien.nama} (No. RM: ${pasien.noRm})`;
+                pilihPasienLab.appendChild(opt);
+            });
+        }
+
+        function bukaPanelInputLab(key) {
+            aktifkanLinkDataPasien();
+            const pasien = daftarPasienGabungan.find((p) => p.key === key);
+            if (!pasien) return;
+
+            pasienAktifKey = pasien.key;
+            barisTerkilikKey = pasien.key;
+            pilihPasienLab.value = pasien.key;
+            pesanStatusLab.textContent = '';
+            pesanStatusLab.className = 'lab-feedback-msg';
+
+            const dataLabLama = hasilLabTersimpan[pasien.key];
+            if (dataLabLama) {
+                penanggungJawabLabInput.value = dataLabLama.penanggungJawabLab || DEFAULT_PENANGGUNG_JAWAB;
+                petugasLaboratoriumInput.value = dataLabLama.petugasLaboratorium || dataLabLama.dokterPenanggungJawab || DEFAULT_PETUGAS_LAB;
+            } else {
+                penanggungJawabLabInput.value = DEFAULT_PENANGGUNG_JAWAB;
+                petugasLaboratoriumInput.value = DEFAULT_PETUGAS_LAB;
+            }
+
+            const params = dapatkanParameterUntukPasien(pasien);
+            tabelInputLabBody.innerHTML = '';
+
+            params.forEach((namaParam) => {
+                const meta = KATALOG_PARAMETER[namaParam];
+                const itemTersimpan = dataLabLama && Array.isArray(dataLabLama.items)
+                    ? dataLabLama.items.find((it) => it.pemeriksaan === namaParam)
+                    : null;
+
+                const isAuto = PARAMETER_TERHITUNG.has(namaParam);
+                const nilaiAwal = itemTersimpan ? itemTersimpan.hasil : '';
+                const evalHasil = evaluasiStatusParameter(namaParam, nilaiAwal);
+
+                const tr = document.createElement('tr');
+                tr.className = evalHasil.rowClass;
+                tr.dataset.param = namaParam;
+
+                tr.innerHTML = `
+                    <td>
+                        <strong>${namaParam}</strong>
+                        ${isAuto ? '<span class="auto-badge">Otomatis</span>' : ''}
+                    </td>
+                    <td>
+                        <input
+                            type="text"
+                            class="lab-hasil-input"
+                            data-param="${namaParam}"
+                            value="${nilaiAwal}"
+                            placeholder="${isAuto ? 'Otomatis' : 'Nilai atau -'}"
+                            ${isAuto ? 'readonly tabindex="-1"' : ''}
+                        >
+                    </td>
+                    <td>${meta.satuan}</td>
+                    <td>${meta.rujukan}</td>
+                    <td>${meta.kritisTeks}</td>
+                    <td>${meta.metode}</td>
+                    <td>
+                        <span class="flag-text ${evalHasil.cssClass}" data-keterangan-for="${namaParam}">
+                            ${evalHasil.label}
+                        </span>
+                    </td>
+                `;
+
+                if (!isAuto) {
+                    const inputEl = tr.querySelector('.lab-hasil-input');
+                    inputEl.addEventListener('input', function () {
+                        aktifkanLinkDataPasien();
+                        perbaruiBarisTampilan(tr, namaParam, this.value);
+                        if (namaParam === 'Hemoglobin' || namaParam === 'Hematokrit' || namaParam === 'Eritrosit') {
+                            sinkronkanIndeksOtomatisDiPanel();
+                        }
+                    });
+                }
+
+                tabelInputLabBody.appendChild(tr);
+            });
+
+            sinkronkanIndeksOtomatisDiPanel();
+            panelInputLab.classList.add('show');
+            sinkronkanSorotanBarisAktif();
+            panelInputLab.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        pilihPasienLab.addEventListener('change', function () {
+            aktifkanLinkDataPasien();
+            if (this.value) {
+                bukaPanelInputLab(this.value);
+            }
+        });
+
+        btnTutupPanelLab.addEventListener('click', function () {
+            aktifkanLinkDataPasien();
+            panelInputLab.classList.remove('show');
+            sinkronkanSorotanBarisAktif();
+        });
+
+        function kumpulkanDataFormLab() {
+            sinkronkanIndeksOtomatisDiPanel();
+
+            const barisList = Array.from(tabelInputLabBody.querySelectorAll('tr'));
+            const items = [];
+
+            for (const tr of barisList) {
+                const namaParam = tr.dataset.param;
+                const inputEl = tr.querySelector('.lab-hasil-input');
+                const hasilRaw = inputEl.value.trim();
+
+                if (hasilRaw === '') {
+                    return {
+                        valid: false,
+                        error: PARAMETER_TERHITUNG.has(namaParam)
+                            ? `Pemeriksaan "${namaParam}" belum dapat dihitung. Pastikan Hemoglobin, Hematokrit, dan Eritrosit terisi angka valid atau tanda strip (-).`
+                            : `Pemeriksaan "${namaParam}" belum diisi. Isi nilai hasil atau ketik tanda strip (-).`,
+                        focusElement: inputEl
+                    };
+                }
+
+                if (hasilRaw !== '-' && parseAngkaDesimal(hasilRaw) === null) {
+                    return {
+                        valid: false,
+                        error: `Nilai "${namaParam}" tidak valid. Gunakan angka (koma atau titik) atau tanda strip (-).`,
+                        focusElement: inputEl
+                    };
+                }
+
+                const meta = KATALOG_PARAMETER[namaParam];
+                const evalStatus = evaluasiStatusParameter(namaParam, hasilRaw);
+
+                items.push({
+                    pemeriksaan: namaParam,
+                    hasil: hasilRaw,
+                    satuan: meta.satuan,
+                    nilaiRujukan: meta.rujukan,
+                    nilaiKritis: meta.kritisTeks,
+                    metode: meta.metode,
+                    keterangan: evalStatus.label,
+                    rowClass: evalStatus.rowClass,
+                    cssClass: evalStatus.cssClass
+                });
+            }
+
+            const pjNilai = penanggungJawabLabInput.value.trim() || DEFAULT_PENANGGUNG_JAWAB;
+            const petugasNilai = petugasLaboratoriumInput.value.trim() || DEFAULT_PETUGAS_LAB;
+
+            return {
+                valid: true,
+                penanggungJawabLab: pjNilai,
+                petugasLaboratorium: petugasNilai,
+                dokterPenanggungJawab: petugasNilai,
+                tanggalPeriksa: new Date().toLocaleString('id-ID'),
+                items
+            };
+        }
+
+        function buatRingkasanStatusLab(items) {
+            const labels = items.map((it) => it.keterangan);
+            if (labels.includes('CRITICAL')) return 'Ada nilai CRITICAL';
+            if (labels.includes('High') || labels.includes('Low')) return 'Ada nilai High/Low';
+            return 'Semua terisi / Normal';
+        }
+
+        function catatKeRiwayatPemeriksaan(pasien, paketLab) {
+            const riwayatTerbaru = JSON.parse(localStorage.getItem(STORAGE_RIWAYAT_LAB)) || {};
+            const bucket = buatBucketRiwayat(pasien);
+            const daftarLama = Array.isArray(riwayatTerbaru[bucket]) ? riwayatTerbaru[bucket] : [];
+
+            const entriBaru = {
+                id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+                pasienKey: pasien.key,
+                nomorAntrean: pasien.nomorAntrean,
+                noRm: pasien.noRm,
+                nama: pasien.nama,
+                poliRujukan: pasien.poliRujukan,
+                dokterPengirim: pasien.dokterPengirim,
+                tanggalPeriksa: paketLab.tanggalPeriksa,
+                penanggungJawabLab: paketLab.penanggungJawabLab,
+                petugasLaboratorium: paketLab.petugasLaboratorium,
+                ringkasanStatus: buatRingkasanStatusLab(paketLab.items),
+                items: paketLab.items
+            };
+
+            riwayatTerbaru[bucket] = [entriBaru, ...daftarLama];
+            localStorage.setItem(STORAGE_RIWAYAT_LAB, JSON.stringify(riwayatTerbaru));
+        }
+
+        btnSimpanHasilLab.addEventListener('click', function () {
+            aktifkanLinkDataPasien();
+            if (!pasienAktifKey) return;
+
+            const pasien = daftarPasienGabungan.find((p) => p.key === pasienAktifKey);
+            if (!pasien) return;
+
+            const hasilKumpulan = kumpulkanDataFormLab();
+            if (!hasilKumpulan.valid) {
+                pesanStatusLab.textContent = hasilKumpulan.error;
+                pesanStatusLab.className = 'lab-feedback-msg lab-feedback-error';
+                if (hasilKumpulan.focusElement && !hasilKumpulan.focusElement.readOnly) {
+                    hasilKumpulan.focusElement.focus();
+                }
+                return;
+            }
+
+            const paketHasil = {
+                penanggungJawabLab: hasilKumpulan.penanggungJawabLab,
+                petugasLaboratorium: hasilKumpulan.petugasLaboratorium,
+                dokterPenanggungJawab: hasilKumpulan.petugasLaboratorium,
+                tanggalPeriksa: hasilKumpulan.tanggalPeriksa,
+                items: hasilKumpulan.items
+            };
+
+            hasilLabTersimpan[pasienAktifKey] = paketHasil;
+            localStorage.setItem(STORAGE_HASIL_LAB, JSON.stringify(hasilLabTersimpan));
+
+            catatKeRiwayatPemeriksaan(pasien, paketHasil);
+            renderTabelPasien();
+
+            pesanStatusLab.textContent = 'Hasil tersimpan, masuk ke riwayat, dan siap dicetak di print.html.';
+            pesanStatusLab.className = 'lab-feedback-msg lab-feedback-success';
+        });
+
+        function adaPerubahanPanelBelumDisimpan(pasienKey, dataLabTersimpan) {
+            if (!panelInputLab.classList.contains('show') || pasienAktifKey !== pasienKey) {
+                return false;
+            }
+            if (!dataLabTersimpan) return true;
+
+            const pjPanel = penanggungJawabLabInput.value.trim() || DEFAULT_PENANGGUNG_JAWAB;
+            const petugasPanel = petugasLaboratoriumInput.value.trim() || DEFAULT_PETUGAS_LAB;
+            const pjSimpan = dataLabTersimpan.penanggungJawabLab || DEFAULT_PENANGGUNG_JAWAB;
+            const petugasSimpan = dataLabTersimpan.petugasLaboratorium || dataLabTersimpan.dokterPenanggungJawab || DEFAULT_PETUGAS_LAB;
+
+            if (pjPanel !== pjSimpan || petugasPanel !== petugasSimpan) {
+                return true;
+            }
+
+            const simpanMap = new Map(
+                (Array.isArray(dataLabTersimpan.items) ? dataLabTersimpan.items : [])
+                    .map((it) => [it.pemeriksaan, String(it.hasil ?? '').trim()])
+            );
+
+            const barisList = Array.from(tabelInputLabBody.querySelectorAll('tr'));
+            for (const tr of barisList) {
+                const param = tr.dataset.param;
+                const inp = tr.querySelector('.lab-hasil-input');
+                const nilaiPanel = inp ? inp.value.trim() : '';
+                const nilaiSimpan = simpanMap.get(param) ?? '';
+                if (nilaiPanel !== nilaiSimpan) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function cetakHasilPasien(key) {
+            aktifkanLinkDataPasien();
+            const pasien = daftarPasienGabungan.find((p) => p.key === key);
+            if (!pasien) return;
+
+            const hasilTerbaru = JSON.parse(localStorage.getItem(STORAGE_HASIL_LAB)) || {};
+            const dataLab = hasilTerbaru[pasien.key];
+
+            if (!dataLab || !Array.isArray(dataLab.items) || dataLab.items.length === 0) {
+                alert('Hasil laboratorium untuk pasien ini belum tersimpan. Silakan buka "Input", lengkapi hasil, lalu klik "Simpan Hasil Lab" terlebih dahulu sebelum mencetak.');
+                return;
+            }
+
+            if (adaPerubahanPanelBelumDisimpan(pasien.key, dataLab)) {
+                alert('Ada perubahan pada panel input yang belum disimpan. Silakan klik "Simpan Hasil Lab" terlebih dahulu agar hasil yang tercetak di print.html sesuai.');
+                return;
+            }
+
+            const parameterWajib = dapatkanParameterUntukPasien(pasien);
+            const itemMap = new Map(dataLab.items.map((it) => [it.pemeriksaan, it]));
+
+            for (const namaParam of parameterWajib) {
+                const item = itemMap.get(namaParam);
+                if (!item || String(item.hasil ?? '').trim() === '') {
+                    alert(`Peringatan: Pemeriksaan "${namaParam}" belum tersimpan. Klik "Input", lengkapi hasil atau tanda "-", lalu klik "Simpan Hasil Lab".`);
+                    return;
+                }
+            }
+
+            const urlCetak = `print.html?key=${encodeURIComponent(pasien.key)}`;
+            window.open(urlCetak, '_blank');
+        }
+
+        btnCetakDariPanel.addEventListener('click', function () {
+            aktifkanLinkDataPasien();
+            if (!pasienAktifKey) return;
+            cetakHasilPasien(pasienAktifKey);
+        });
+
+        const linkDataPasien = document.querySelector('.nav-links a[href="data-pasien.html"]');
+        const semuaLinkNav = document.querySelectorAll('.nav-links a');
+
+        function aktifkanLinkDataPasien() {
+            semuaLinkNav.forEach((link) => link.classList.remove('nav-active-solid'));
+            if (linkDataPasien) {
+                linkDataPasien.classList.add('nav-active-solid');
+            }
+        }
+
+        semuaLinkNav.forEach((link) => {
+            link.addEventListener('click', function (e) {
+                semuaLinkNav.forEach((item) => item.classList.remove('nav-active-solid'));
+                this.classList.add('nav-active-solid');
+
+                const href = this.getAttribute('href') || '';
+                if (href && !href.startsWith('#')) {
+                    e.preventDefault();
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 180);
+                }
+            });
+        });
+
+        panelInputLab.addEventListener('click', aktifkanLinkDataPasien);
+        tabelPasienBody.addEventListener('click', aktifkanLinkDataPasien);
+
+        muatUlangDaftarPasien();
+    </script>
+</body>
+</html>

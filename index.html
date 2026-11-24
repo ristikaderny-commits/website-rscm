@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSUP NASIONAL DR CIPTO MANGUNKUSUMO</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Padanan HEX terdekat untuk TH 048 AA */
+            --active-brown-solid: #5d4e46;
+            --active-brown-border: #4c3f38;
+        }
+
+        /* Header terkunci: sejajar satu baris tanpa balok terpisah di kanan */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            transition: var(--transition);
+        }
+
+        .header-action {
+            display: none !important;
+        }
+
+        /* Status aktif cokelat tua solid untuk semua item navigasi termasuk Pendaftaran */
+        .nav-links a.nav-active-solid {
+            background-color: var(--active-brown-solid) !important;
+            color: #ffffff !important;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        /* Peningkatan visual Hero Section (#beranda) */
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8f5f2 0%, #ffffff 58%, #f1eae4 100%);
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(93, 78, 70, 0.11) 0%, rgba(93, 78, 70, 0) 70%);
+            top: -90px;
+            right: -70px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-content,
+        .hero-image-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #f3ece7;
+            border: 1px solid #dfd3ca;
+            color: var(--active-brown-solid);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 6px 13px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+            letter-spacing: 0.01em;
+        }
+
+        .hero-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-hero-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1.5px solid var(--active-brown-solid);
+            background-color: #ffffff;
+            color: var(--active-brown-solid);
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-hero-secondary:hover {
+            background-color: #f3ece7;
+            transform: translateY(-1px);
+        }
+
+        .hero-highlights {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 26px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(93, 78, 70, 0.16);
+        }
+
+        .hero-highlight-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .hero-highlight-item strong {
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .hero-highlight-item span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.35;
+        }
+
+        .hero-photo-frame {
+            position: relative;
+            padding: 10px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #e5dcd5;
+            box-shadow: 0 18px 36px rgba(62, 49, 41, 0.12);
+        }
+
+        .hero-photo-frame::after {
+            content: "";
+            position: absolute;
+            inset: 18px -10px -10px 18px;
+            border-radius: 22px;
+            background-color: rgba(93, 78, 70, 0.12);
+            z-index: -1;
+        }
+
+        .hero-photo-frame .hero-img {
+            display: block;
+            width: 100%;
+            border-radius: 16px;
+        }
+
+        .hero-floating-badge {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(6px);
+            border: 1px solid #e5dcd5;
+            color: var(--text-dark);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .hero-floating-badge i {
+            color: var(--active-brown-solid);
+            transition: var(--transition);
+        }
+
+        .hero-floating-badge:hover {
+            border-color: var(--active-brown-solid);
+            transform: translateY(-1px);
+        }
+
+        .hero-floating-badge.is-active {
+            background-color: var(--active-brown-solid) !important;
+            border-color: var(--active-brown-border) !important;
+            color: #ffffff !important;
+            box-shadow: 0 10px 22px rgba(93, 78, 70, 0.28);
+        }
+
+        .hero-floating-badge.is-active i {
+            color: #ffffff !important;
+        }
+
+        /* Modal kecil di tengah layar untuk opsi Google Maps */
+        .maps-modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(15, 23, 42, 0.48);
+            backdrop-filter: blur(2px);
+            z-index: 1200;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .maps-modal-backdrop.show {
+            display: flex;
+        }
+
+        .maps-modal-card {
+            position: relative;
+            width: 100%;
+            max-width: 390px;
+            background-color: #ffffff;
+            border: 1px solid #e5dcd5;
+            border-radius: 18px;
+            padding: 20px 22px 22px;
+            box-shadow: 0 20px 44px rgba(15, 23, 42, 0.22);
+            color: var(--text-dark);
+        }
+
+        .maps-modal-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            line-height: 1;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .maps-modal-close:hover {
+            background-color: #f3ece7;
+            color: var(--active-brown-solid);
+        }
+
+        .maps-modal-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            padding-right: 30px;
+            margin-bottom: 6px;
+        }
+
+        .maps-modal-address {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+            margin-bottom: 18px;
+        }
+
+        .maps-modal-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-maps-open {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: var(--active-brown-solid);
+            color: #ffffff;
+            border: 1px solid var(--active-brown-border);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.86rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-maps-open:hover {
+            background-color: var(--active-brown-border);
+        }
+
+        .btn-maps-cancel {
+            background-color: #ffffff;
+            color: var(--text-dark);
+            border: 1px solid #d6ccc4;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-maps-cancel:hover {
+            background-color: #f3ece7;
+        }
+
+        /* Status aktif cokelat tua solid untuk kartu menu cepat di beranda */
+        .menu-grid .menu-card.menu-card-active {
+            background-color: var(--active-brown-solid) !important;
+            border-color: var(--active-brown-border) !important;
+            color: #ffffff !important;
+            box-shadow: 0 10px 22px rgba(93, 78, 70, 0.25);
+        }
+
+        .menu-grid .menu-card.menu-card-active span {
+            color: #ffffff !important;
+        }
+
+        .menu-grid .menu-card.menu-card-active .icon-circle {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important;
+        }
+
+        .menu-grid .menu-card.menu-card-active .icon-circle i {
+            color: #ffffff !important;
+        }
+
+        /* Panel Antrean Berlangsung di bawah grid menu cepat */
+        .queue-panel {
+            display: none;
+            margin-top: 16px;
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .queue-panel.show {
+            display: block;
+        }
+
+        .queue-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .queue-panel-header h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .btn-close-queue {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-close-queue:hover {
+            background-color: var(--primary-light);
+            color: var(--text-dark);
+        }
+
+        .queue-current-card {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .queue-current-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 3px 9px;
+            border-radius: 999px;
+            margin-bottom: 10px;
+        }
+
+        .queue-current-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .queue-current-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .queue-current-number {
+            background-color: var(--white);
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1.15rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .queue-current-patient strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--white);
+        }
+
+        .queue-current-patient span {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .btn-next-queue {
+            background-color: var(--white);
+            color: var(--primary-dark);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-next-queue:hover {
+            background-color: var(--primary-light);
+        }
+
+        .queue-summary-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .queue-waiting-count {
+            background-color: var(--primary-light);
+            border: 1px solid var(--border-color);
+            color: var(--primary-dark);
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .queue-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .queue-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background-color: var(--primary-light);
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .queue-number {
+            font-weight: 700;
+            color: var(--primary-dark);
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .queue-info {
+            flex: 1;
+            min-width: 180px;
+            color: var(--text-dark);
+        }
+
+        .queue-sub {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .queue-status-badge {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            padding: 3px 9px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        .queue-empty {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: 12px 0;
+        }
+
+        /* Panel Cek Hasil Laboratorium & Riwayat Pemeriksaan */
+        .cek-lab-panel {
+            display: none;
+            margin-top: 16px;
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .cek-lab-panel.show {
+            display: block;
+        }
+
+        .cek-lab-form-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .cek-lab-input {
+            flex: 1 1 240px;
+            padding: 9px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.92rem;
+            color: var(--text-dark);
+            background-color: var(--white);
+        }
+
+        .cek-lab-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-cek-lab-submit {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 9px 15px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-cek-lab-submit:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-cek-lab-print {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 7px 13px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-cek-lab-print:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .cek-lab-msg {
+            margin-top: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .cek-lab-msg-error {
+            color: #b91c1c;
+        }
+
+        .cek-lab-msg-ok {
+            color: #15803d;
+        }
+
+        .cek-lab-result-box {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .cek-lab-result-box.show {
+            display: block;
+        }
+
+        .cek-lab-result-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .cek-lab-readonly-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            background-color: var(--primary-light);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .riwayat-session-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .riwayat-session-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background-color: var(--primary-light);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 15px;
+        }
+
+        .riwayat-session-meta strong {
+            display: block;
+            font-size: 0.94rem;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .riwayat-session-meta span {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .btn-lihat-riwayat {
+            background-color: var(--active-brown-solid);
+            color: #ffffff;
+            border: none;
+            padding: 7px 13px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-lihat-riwayat:hover {
+            background-color: var(--active-brown-border);
+        }
+
+        .report-paper {
+            background-color: #ffffff;
+            color: #111827;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+
+        .report-kop {
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #111827;
+            margin-bottom: 12px;
+        }
+
+        .report-kop-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 0.88rem;
+            margin-bottom: 3px;
+        }
+
+        .report-kop h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .report-kop p {
+            font-size: 0.78rem;
+            color: #4b5563;
+        }
+
+        .report-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px 18px;
+            font-size: 0.84rem;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d1d5db;
+        }
+
+        .report-info-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .report-info-label {
+            min-width: 110px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .report-section-heading {
+            text-align: center;
+            font-size: 0.92rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .report-table-wrap {
+            overflow-x: auto;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            margin-bottom: 12px;
+        }
+
+        .report-table th,
+        .report-table td {
+            padding: 7px 8px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        .report-table th {
+            background-color: #f8fafc;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .row-status-normal {
+            background-color: #ffffff;
+        }
+
+        .row-status-high,
+        .row-status-low {
+            background-color: #ecfccb;
+            font-weight: 600;
+        }
+
+        .row-status-critical {
+            background-color: #fecdd3;
+            color: #881337;
+            font-weight: 700;
+        }
+
+        .flag-normal {
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .flag-high,
+        .flag-low {
+            color: #3f6212;
+            font-weight: 700;
+        }
+
+        .flag-critical {
+            color: #be123c;
+            font-weight: 700;
+        }
+
+        .report-footer-meta {
+            font-size: 0.8rem;
+            color: #374151;
+            margin-bottom: 14px;
+        }
+
+        .report-sign-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            text-align: center;
+            font-size: 0.82rem;
+            margin-bottom: 10px;
+        }
+
+        .report-sign-space {
+            height: 44px;
+        }
+
+        .report-disclaimer {
+            font-size: 0.74rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .hero-highlights {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .hero-floating-badge {
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+            }
+
+            .report-info-grid,
+            .report-sign-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fa-solid fa-hospital"></i>
+                <span>RSCM</span>
+            </div>
+            <nav class="nav-links" aria-label="Navigasi Utama">
+                <a href="index.html#beranda" data-section="beranda" class="nav-active-solid">Beranda</a>
+                <a href="index.html#layanan" data-section="layanan">Layanan</a>
+                <a href="index.html#visi-misi" data-section="visi-misi">Visi &amp; Misi</a>
+                <a href="data-pasien.html">Data Pasien</a>
+                <a href="pendaftaran.html">Pendaftaran</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="beranda" class="hero-section">
+        <div class="hero-content">
+            <div class="hero-eyebrow">
+                <i class="fa-solid fa-shield-heart"></i>
+                <span>Rumah Sakit Rujukan Nasional &bull; Kementerian Kesehatan RI</span>
+            </div>
+            <h1><span class="welcome-text">Selamat Datang di</span> <br><span>RSUP Nasional Dr. Cipto Mangunkusumo</span></h1>
+            <p>RSUP Nasional Dr. Cipto Mangunkusumo merupakan rumah sakit rujukan nasional yang mengutamakan pelayanan, pendidikan, dan penelitian kesehatan terbaik di Indonesia</p>
+            <div class="hero-buttons">
+                <a href="#layanan" class="btn-main">Jelajahi Layanan</a>
+                <a href="pendaftaran.html" id="btnDaftarHero" class="btn-hero-secondary">
+                    <i class="fa-solid fa-user-plus"></i> Daftar Sekarang
+                </a>
+            </div>
+            <div class="hero-highlights">
+                <div class="hero-highlight-item">
+                    <strong>24 Jam</strong>
+                    <span>Layanan Gawat Darurat &amp; Laboratorium</span>
+                </div>
+                <div class="hero-highlight-item">
+                    <strong>Terintegrasi</strong>
+                    <span>Pendaftaran, Antrean &amp; Hasil Lab</span>
+                </div>
+                <div class="hero-highlight-item">
+                    <strong>Rujukan Utama</strong>
+                    <span>Pelayanan Klinis &amp; Akademik</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image-wrapper">
+            <div class="hero-photo-frame">
+                <img src="rscm.jpeg" alt="RSCM" class="hero-img">
+                <button type="button" id="btnLokasiBadge" class="hero-floating-badge" aria-haspopup="dialog" aria-expanded="false">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Jl. Diponegoro No. 71, Jakarta Pusat</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Pilihan Google Maps -->
+    <div id="modalLokasiMaps" class="maps-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="judulModalMaps">
+        <div class="maps-modal-card">
+            <button type="button" id="btnSilangMaps" class="maps-modal-close" aria-label="Tutup">&times;</button>
+            <div id="judulModalMaps" class="maps-modal-title">Lokasi RSUP Nasional Dr. Cipto Mangunkusumo</div>
+            <p class="maps-modal-address">Jl. Diponegoro No. 71, Jakarta Pusat</p>
+            <div class="maps-modal-actions">
+                <a
+                    href="https://www.google.com/maps/search/?api=1&query=RSUP+Nasional+Dr.+Cipto+Mangunkusumo+Jl.+Diponegoro+No.+71+Jakarta+Pusat"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    id="linkBukaGoogleMaps"
+                    class="btn-maps-open"
+                >
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka di Google Maps
+                </a>
+                <button type="button" id="btnBatalMaps" class="btn-maps-cancel">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <section id="layanan" class="quick-service-section">
+        <div class="container">
+            <div class="quick-menu-container">
+                <div class="menu-grid">
+                    <a href="pendaftaran.html" id="btnBuatJanji" class="menu-card">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-calendar-plus"></i>
+                        </div>
+                        <span>Buat Janji</span>
+                    </a>
+
+                    <a href="#antrean-berlangsung" id="btnAntreanBerlangsung" class="menu-card">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-list-ol"></i>
+                        </div>
+                        <span>Antrean Berlangsung</span>
+                    </a>
+
+                    <a href="#cek-hasil-lab" id="btnCekHasilLab" class="menu-card">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-flask"></i>
+                        </div>
+                        <span>Cek Hasil Laboratorium</span>
+                    </a>
+
+                    <a href="#riwayat-pemeriksaan" id="btnRiwayatPemeriksaan" class="menu-card">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <span>Riwayat Pemeriksaan</span>
+                    </a>
+                </div>
+
+                <!-- Panel Antrean Berlangsung -->
+                <div id="panelAntreanBerlangsung" class="queue-panel" aria-live="polite">
+                    <div class="queue-panel-header">
+                        <h4>Antrean Berlangsung</h4>
+                        <button type="button" id="btnTutupAntrean" class="btn-close-queue">Tutup</button>
+                    </div>
+
+                    <!-- Kotak Sedang Dilayani -->
+                    <div id="kotakSedangDilayani"></div>
+
+                    <!-- Ringkasan Jumlah Menunggu & Daftar Menunggu -->
+                    <div class="queue-summary-bar">
+                        <span>Daftar Antrean Menunggu</span>
+                        <span id="ringkasanMenunggu" class="queue-waiting-count">0 Menunggu</span>
+                    </div>
+                    <ul id="daftarAntreanAktif" class="queue-list"></ul>
+                </div>
+
+                <!-- Panel Cek Hasil Laboratorium (Read-Only + Cetak / Simpan PDF) -->
+                <div id="panelCekHasilLab" class="cek-lab-panel" aria-live="polite">
+                    <div class="queue-panel-header">
+                        <h4>Cek Hasil Laboratorium</h4>
+                        <button type="button" id="btnTutupCekLab" class="btn-close-queue">Tutup</button>
+                    </div>
+
+                    <form id="formCariNoRm" class="cek-lab-form-row">
+                        <input
+                            type="text"
+                            id="inputNoRmPasien"
+                            class="cek-lab-input"
+                            placeholder="Masukkan No. RM pasien..."
+                            autocomplete="off"
+                            required
+                        >
+                        <button type="submit" class="btn-cek-lab-submit">
+                            <i class="fa-solid fa-magnifying-glass"></i> Cek Hasil
+                        </button>
+                        <button type="button" id="btnBersihkanCekLab" class="btn-close-queue">Reset</button>
+                    </form>
+
+                    <div id="pesanCekLab" class="cek-lab-msg"></div>
+
+                    <div id="kotakHasilLabReadOnly" class="cek-lab-result-box">
+                        <div class="cek-lab-result-toolbar">
+                            <span class="cek-lab-readonly-tag">
+                                <i class="fa-solid fa-eye"></i> Lembar Hasil (Read-Only)
+                            </span>
+                            <button type="button" id="btnCetakHasilLab" class="btn-cek-lab-print">
+                                <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
+                            </button>
+                        </div>
+
+                        <div id="kertasCetakHasilLab" class="report-paper"></div>
+                    </div>
+                </div>
+
+                <!-- Panel Riwayat Pemeriksaan Pasien (Syarat: Masukkan No. RM) -->
+                <div id="panelRiwayatPemeriksaan" class="cek-lab-panel" aria-live="polite">
+                    <div class="queue-panel-header">
+                        <h4>Riwayat Pemeriksaan</h4>
+                        <button type="button" id="btnTutupRiwayat" class="btn-close-queue">Tutup</button>
+                    </div>
+
+                    <form id="formCariRiwayatNoRm" class="cek-lab-form-row">
+                        <input
+                            type="text"
+                            id="inputNoRmRiwayat"
+                            class="cek-lab-input"
+                            placeholder="Masukkan No. RM untuk melihat riwayat pemeriksaan..."
+                            autocomplete="off"
+                            required
+                        >
+                        <button type="submit" class="btn-cek-lab-submit">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Cari Riwayat
+                        </button>
+                        <button type="button" id="btnBersihkanRiwayat" class="btn-close-queue">Reset</button>
+                    </form>
+
+                    <div id="pesanRiwayat" class="cek-lab-msg"></div>
+                    <div id="daftarSesiRiwayat" class="riwayat-session-list"></div>
+
+                    <div id="kotakDetailRiwayat" class="cek-lab-result-box">
+                        <div class="cek-lab-result-toolbar">
+                            <span class="cek-lab-readonly-tag">
+                                <i class="fa-solid fa-file-lines"></i> Rincian Riwayat Pemeriksaan (Read-Only)
+                            </span>
+                            <button type="button" id="btnTutupDetailRiwayat" class="btn-close-queue">Tutup Rincian</button>
+                        </div>
+                        <div id="kertasDetailRiwayat" class="report-paper"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="visi-misi" class="vision-mission-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Komitmen &amp; Tujuan Kami</h2>
+                <p>Landasan pelayanan profesional demi kesehatan masyarakat Indonesia</p>
+            </div>
+            <div class="vm-grid">
+                <div class="vm-card">
+                    <div class="icon-box"><i class="fa-solid fa-eye"></i></div>
+                    <h3>Visi Rumah Sakit</h3>
+                    <p>Rumah Sakit Berkelas Dunia yang memiliki pelayanan, pendidikan, dan penelitian unggulan dengan pertumbuhan berkelanjutan.</p>
+                </div>
+                <div class="vm-card">
+                    <div class="icon-box"><i class="fa-solid fa-bullseye"></i></div>
+                    <h3>Misi Pelayanan</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Memberikan pengalaman pasien melalui perbaikan kualitas pelayanan dan fasilitas pendukung.</li>
+                        <li><i class="fa-solid fa-check"></i> Meningkatkan kualitas pemberi layanan melalui peningkatan produktivitas kerja.</li>
+                        <li><i class="fa-solid fa-check"></i> Meningkatkan mutu layanan klinis melalui standarisasi pelayanan.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <h3><i class="fa-solid fa-hospital"></i> RSUP NASIONAL DR CIPTO MANGUNKUSUMO</h3>
+                <p>Prima, Melesat, Menolong, Memberikan yang Terbaik</p>
+            </div>
+            <div class="footer-info">
+                <p>&copy; info@rscm.co.id</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const navHeaderItems = document.querySelectorAll('.nav-links a');
+        const semuaKartuMenu = document.querySelectorAll('.menu-grid .menu-card');
+        const btnDaftarHero = document.getElementById('btnDaftarHero');
+        const btnLokasiBadge = document.getElementById('btnLokasiBadge');
+        const modalLokasiMaps = document.getElementById('modalLokasiMaps');
+        const btnSilangMaps = document.getElementById('btnSilangMaps');
+        const btnBatalMaps = document.getElementById('btnBatalMaps');
+        const linkBukaGoogleMaps = document.getElementById('linkBukaGoogleMaps');
+        const btnBuatJanji = document.getElementById('btnBuatJanji');
+        const btnAntrean = document.getElementById('btnAntreanBerlangsung');
+        const btnCekHasilLab = document.getElementById('btnCekHasilLab');
+        const btnRiwayatPemeriksaan = document.getElementById('btnRiwayatPemeriksaan');
+
+        const panelAntrean = document.getElementById('panelAntreanBerlangsung');
+        const btnTutupAntrean = document.getElementById('btnTutupAntrean');
+        const kotakSedangDilayani = document.getElementById('kotakSedangDilayani');
+        const ringkasanMenunggu = document.getElementById('ringkasanMenunggu');
+        const daftarAntreanAktif = document.getElementById('daftarAntreanAktif');
+
+        const panelCekHasilLab = document.getElementById('panelCekHasilLab');
+        const btnTutupCekLab = document.getElementById('btnTutupCekLab');
+        const formCariNoRm = document.getElementById('formCariNoRm');
+        const inputNoRmPasien = document.getElementById('inputNoRmPasien');
+        const btnBersihkanCekLab = document.getElementById('btnBersihkanCekLab');
+        const pesanCekLab = document.getElementById('pesanCekLab');
+        const kotakHasilLabReadOnly = document.getElementById('kotakHasilLabReadOnly');
+        const kertasCetakHasilLab = document.getElementById('kertasCetakHasilLab');
+        const btnCetakHasilLab = document.getElementById('btnCetakHasilLab');
+
+        const panelRiwayatPemeriksaan = document.getElementById('panelRiwayatPemeriksaan');
+        const btnTutupRiwayat = document.getElementById('btnTutupRiwayat');
+        const formCariRiwayatNoRm = document.getElementById('formCariRiwayatNoRm');
+        const inputNoRmRiwayat = document.getElementById('inputNoRmRiwayat');
+        const btnBersihkanRiwayat = document.getElementById('btnBersihkanRiwayat');
+        const pesanRiwayat = document.getElementById('pesanRiwayat');
+        const daftarSesiRiwayat = document.getElementById('daftarSesiRiwayat');
+        const kotakDetailRiwayat = document.getElementById('kotakDetailRiwayat');
+        const kertasDetailRiwayat = document.getElementById('kertasDetailRiwayat');
+        const btnTutupDetailRiwayat = document.getElementById('btnTutupDetailRiwayat');
+
+        let navTerkunciManual = false;
+
+        function setNavHeaderAktif(el) {
+            navHeaderItems.forEach((item) => item.classList.remove('nav-active-solid'));
+            if (el) el.classList.add('nav-active-solid');
+        }
+
+        function setNavAktifBySection(sectionId) {
+            const target = document.querySelector(`.nav-links a[data-section="${sectionId}"]`);
+            if (target) {
+                setNavHeaderAktif(target);
+            }
+        }
+
+        function setMenuCardAktif(el) {
+            semuaKartuMenu.forEach((card) => card.classList.remove('menu-card-active'));
+            if (el) el.classList.add('menu-card-active');
+        }
+
+        function tutupSemuaPanelLayanan() {
+            panelAntrean.classList.remove('show');
+            panelCekHasilLab.classList.remove('show');
+            panelRiwayatPemeriksaan.classList.remove('show');
+        }
+
+        navHeaderItems.forEach((item) => {
+            item.addEventListener('click', function (e) {
+                setNavHeaderAktif(this);
+                const href = this.getAttribute('href') || '';
+                const sectionId = this.dataset.section;
+
+                if (sectionId) {
+                    navTerkunciManual = true;
+                    setTimeout(() => {
+                        navTerkunciManual = false;
+                    }, 500);
+                }
+
+                const pindahHalaman = href && !href.startsWith('#') && !href.startsWith('index.html#');
+                if (pindahHalaman) {
+                    e.preventDefault();
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 180);
+                }
+            });
+        });
+
+        window.addEventListener('scroll', function () {
+            if (navTerkunciManual) return;
+            const sections = ['beranda', 'layanan', 'visi-misi'];
+            const posisiY = window.scrollY + 140;
+            let aktifId = 'beranda';
+
+            sections.forEach((id) => {
+                const sec = document.getElementById(id);
+                if (sec && sec.offsetTop <= posisiY) {
+                    aktifId = id;
+                }
+            });
+
+            setNavAktifBySection(aktifId);
+        });
+
+        function bukaModalMaps() {
+            modalLokasiMaps.classList.add('show');
+            btnLokasiBadge.classList.add('is-active');
+            btnLokasiBadge.setAttribute('aria-expanded', 'true');
+        }
+
+        function tutupModalMaps() {
+            modalLokasiMaps.classList.remove('show');
+            btnLokasiBadge.classList.remove('is-active');
+            btnLokasiBadge.setAttribute('aria-expanded', 'false');
+        }
+
+        btnLokasiBadge.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (modalLokasiMaps.classList.contains('show')) {
+                tutupModalMaps();
+            } else {
+                bukaModalMaps();
+            }
+        });
+
+        btnSilangMaps.addEventListener('click', tutupModalMaps);
+        btnBatalMaps.addEventListener('click', tutupModalMaps);
+        linkBukaGoogleMaps.addEventListener('click', tutupModalMaps);
+
+        modalLokasiMaps.addEventListener('click', function (e) {
+            if (e.target === modalLokasiMaps) {
+                tutupModalMaps();
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modalLokasiMaps.classList.contains('show')) {
+                tutupModalMaps();
+            }
+        });
+
+        if (btnDaftarHero) {
+            btnDaftarHero.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                const navDaftar = document.querySelector('.nav-links a[href="pendaftaran.html"]');
+                if (navDaftar) setNavHeaderAktif(navDaftar);
+                this.style.backgroundColor = 'var(--active-brown-solid)';
+                this.style.color = '#ffffff';
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 180);
+            });
+        }
+
+        btnBuatJanji.addEventListener('click', function (e) {
+            e.preventDefault();
+            setMenuCardAktif(this);
+            const navDaftar = document.querySelector('.nav-links a[href="pendaftaran.html"]');
+            if (navDaftar) setNavHeaderAktif(navDaftar);
+            const href = this.getAttribute('href');
+            setTimeout(() => {
+                window.location.href = href;
+            }, 180);
+        });
+
+        const STORAGE_PENDAFTARAN = 'dataPendaftaranRSCM';
+        const STORAGE_DATA_PASIEN = 'dataPasienRSCM';
+        const STORAGE_HASIL_LAB = 'hasilLaboratoriumRSCM';
+        const STORAGE_RIWAYAT_LAB = 'riwayatPemeriksaanRSCM';
+
+        let pasienAktifCekLabKey = null;
+
+        const KATALOG_DEFAULT = {
+            'Hemoglobin': { satuan: 'g/dL', rujukan: '11.5 - 14.3', kritisTeks: '< 7.0 dan > 20', metode: 'Automated hematology analyzer', minNormal: 11.5, maxNormal: 14.3, critLow: 7.0, critHigh: 20 },
+            'Hematokrit': { satuan: '%', rujukan: '34 - 42', kritisTeks: '< 20 dan > 60', metode: 'Automated hematology analyzer', minNormal: 34, maxNormal: 42, critLow: 20, critHigh: 60 },
+            'Eritrosit': { satuan: 'juta/mm³', rujukan: '4.10 - 5.20', kritisTeks: '-', metode: 'Automated hematology analyzer', minNormal: 4.10, maxNormal: 5.20, critLow: null, critHigh: null },
+            'Leukosit': { satuan: '/mm³', rujukan: '3800 - 10400', kritisTeks: '< 2000 dan > 50000', metode: 'Automated hematology analyzer', minNormal: 3800, maxNormal: 10400, critLow: 2000, critHigh: 50000 },
+            'Trombosit': { satuan: '/mm³', rujukan: '187000 - 400000', kritisTeks: '< 50000 dan > 800000', metode: 'Automated hematology analyzer', minNormal: 187000, maxNormal: 400000, critLow: 50000, critHigh: 800000 },
+            'MCV': { satuan: 'fL', rujukan: '77.8 - 91.1', kritisTeks: '-', metode: 'Calculated', minNormal: 77.8, maxNormal: 91.1, critLow: null, critHigh: null },
+            'MCH': { satuan: 'pg', rujukan: '25 - 33', kritisTeks: '-', metode: 'Calculated', minNormal: 25, maxNormal: 33, critLow: null, critHigh: null },
+            'MCHC': { satuan: 'g/dL', rujukan: '32 - 36', kritisTeks: '-', metode: 'Calculated', minNormal: 32, maxNormal: 36, critLow: null, critHigh: null },
+            'Masa Protrombin (PT)': { satuan: 'detik', rujukan: '9.4 - 12.5', kritisTeks: '> 50', metode: 'Coagulometer', minNormal: 9.4, maxNormal: 12.5, critLow: null, critHigh: 50 },
+            'INR': { satuan: '', rujukan: '0.9 - 1.1', kritisTeks: '> 5.0', metode: 'Calculated', minNormal: 0.9, maxNormal: 1.1, critLow: null, critHigh: 5.0 },
+            'APTT': { satuan: 'detik', rujukan: '25 - 37', kritisTeks: '> 100', metode: 'Coagulometer', minNormal: 25, maxNormal: 37, critLow: null, critHigh: 100 },
+            'D-dimer': { satuan: 'ng/mL FEU', rujukan: '≤ 500', kritisTeks: '-', metode: 'Immunoturbidimetric', minNormal: null, maxNormal: 500, critLow: null, critHigh: null }
+        };
+
+        function ambilDataAntrean() {
+            return JSON.parse(localStorage.getItem(STORAGE_PENDAFTARAN)) || [];
+        }
+
+        function simpanDataAntrean(data) {
+            localStorage.setItem(STORAGE_PENDAFTARAN, JSON.stringify(data));
+        }
+
+        function ambilDataPasienTersimpan() {
+            return JSON.parse(localStorage.getItem(STORAGE_DATA_PASIEN)) || [];
+        }
+
+        function simpanDataPasienTersimpan(data) {
+            localStorage.setItem(STORAGE_DATA_PASIEN, JSON.stringify(data));
+        }
+
+        function buatKeyPasien(item, index = 0) {
+            if (item && item.pasienKey) return item.pasienKey;
+            if (item && item.nomorAntrean) return `${item.nomorAntrean}__${item.noRm || index}`;
+            if (item && item.noRm) return `RM-${item.noRm}__${index}`;
+            return `PASIEN-${index}`;
+        }
+
+        function arsipkanAntreanKeMasterPasien(daftarAntrean) {
+            if (!Array.isArray(daftarAntrean) || daftarAntrean.length === 0) return;
+
+            const masterSekarang = ambilDataPasienTersimpan();
+            const mapMaster = new Map();
+
+            masterSekarang.forEach((item, idx) => {
+                const key = buatKeyPasien(item, idx);
+                mapMaster.set(key, { ...item, pasienKey: key });
+            });
+
+            daftarAntrean.forEach((item, idx) => {
+                const key = buatKeyPasien(item, idx);
+                const salinan = {
+                    ...item,
+                    pasienKey: key,
+                    nomorTransaksi: item.nomorTransaksi || item.nomorAntrean || key,
+                    poliRujukan: item.poliRujukan || item.tujuan || 'Laboratorium',
+                    tanggalOrder: item.tanggalOrder || item.waktuDaftar || '-'
+                };
+
+                if (mapMaster.has(key)) {
+                    mapMaster.set(key, { ...salinan, ...mapMaster.get(key), pasienKey: key });
+                } else {
+                    mapMaster.set(key, salinan);
+                }
+            });
+
+            simpanDataPasienTersimpan(Array.from(mapMaster.values()));
+        }
+
+        function panggilBerikutnya() {
+            const dataAntrean = ambilDataAntrean();
+            if (dataAntrean.length === 0) return;
+
+            arsipkanAntreanKeMasterPasien(dataAntrean);
+            dataAntrean.shift();
+            simpanDataAntrean(dataAntrean);
+            renderAntreanBerlangsung();
+        }
+
+        function renderAntreanBerlangsung() {
+            const dataAntrean = ambilDataAntrean();
+            arsipkanAntreanKeMasterPasien(dataAntrean);
+            daftarAntreanAktif.innerHTML = '';
+
+            if (dataAntrean.length === 0) {
+                kotakSedangDilayani.innerHTML = `
+                    <div class="queue-current-card">
+                        <span class="queue-current-label">Sedang Dilayani</span>
+                        <div class="queue-current-body">
+                            <div class="queue-current-patient">
+                                <strong>Tidak ada nomor yang sedang dilayani</strong>
+                                <span>Belum ada antrean pendaftaran aktif saat ini.</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                ringkasanMenunggu.textContent = '0 Menunggu';
+                daftarAntreanAktif.innerHTML = `
+                    <li class="queue-empty">Belum ada antrean pendaftaran yang berlangsung saat ini.</li>
+                `;
+                return;
+            }
+
+            const sedangDilayani = dataAntrean[0];
+            const daftarMenunggu = dataAntrean.slice(1);
+
+            kotakSedangDilayani.innerHTML = `
+                <div class="queue-current-card">
+                    <span class="queue-current-label">Sedang Dilayani</span>
+                    <div class="queue-current-body">
+                        <div class="queue-current-main">
+                            <span class="queue-current-number">${sedangDilayani.nomorAntrean}</span>
+                            <div class="queue-current-patient">
+                                <strong>${sedangDilayani.nama}</strong>
+                                <span>Tujuan: ${sedangDilayani.tujuan}</span>
+                            </div>
+                        </div>
+                        <button type="button" id="btnPanggilBerikutnya" class="btn-next-queue">
+                            Panggil Berikutnya / Selesai
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            ringkasanMenunggu.textContent = daftarMenunggu.length + ' Menunggu';
+
+            if (daftarMenunggu.length === 0) {
+                daftarAntreanAktif.innerHTML = `
+                    <li class="queue-empty">Tidak ada antrean lain yang menunggu.</li>
+                `;
+            } else {
+                daftarMenunggu.forEach((item) => {
+                    const li = document.createElement('li');
+                    li.className = 'queue-item';
+                    li.innerHTML = `
+                        <span class="queue-number">${item.nomorAntrean}</span>
+                        <div class="queue-info">
+                            <strong>${item.nama}</strong>
+                            <span class="queue-sub">Tujuan: ${item.tujuan} • ${item.waktuDaftar || ''}</span>
+                        </div>
+                        <span class="queue-status-badge">Menunggu</span>
+                    `;
+                    daftarAntreanAktif.appendChild(li);
+                });
+            }
+
+            const btnNext = document.getElementById('btnPanggilBerikutnya');
+            if (btnNext) {
+                btnNext.addEventListener('click', panggilBerikutnya);
+            }
+        }
+
+        btnAntrean.addEventListener('click', function (e) {
+            e.preventDefault();
+            const sedangTerbuka = panelAntrean.classList.contains('show');
+            tutupSemuaPanelLayanan();
+            if (sedangTerbuka) {
+                setMenuCardAktif(null);
+            } else {
+                renderAntreanBerlangsung();
+                panelAntrean.classList.add('show');
+                setMenuCardAktif(this);
+            }
+        });
+
+        btnTutupAntrean.addEventListener('click', function () {
+            panelAntrean.classList.remove('show');
+            if (btnAntrean.classList.contains('menu-card-active')) {
+                setMenuCardAktif(null);
+            }
+        });
+
+        function normalisasiNoRm(teks) {
+            return String(teks ?? '').trim().toLowerCase().replace(/\s+/g, '');
+        }
+
+        function normalisasiNama(teks) {
+            return String(teks ?? '').trim().toLowerCase().replace(/\s+/g, ' ');
+        }
+
+        function normalisasiItemsLab(rawItems) {
+            if (!Array.isArray(rawItems)) return [];
+            return rawItems
+                .map((it) => {
+                    if (!it || typeof it !== 'object') return null;
+                    const namaParam = it.pemeriksaan || it.parameter || it.namaPemeriksaan || it.nama || '';
+                    const hasilVal = it.hasil !== undefined && it.hasil !== null ? String(it.hasil) : (it.nilai !== undefined && it.nilai !== null ? String(it.nilai) : '');
+                    if (!namaParam && hasilVal.trim() === '') return null;
+                    return {
+                        ...it,
+                        pemeriksaan: namaParam || 'Pemeriksaan',
+                        hasil: hasilVal
+                    };
+                })
+                .filter(Boolean);
+        }
+
+        function ekstrakDataLabObjek(val) {
+            if (!val || typeof val !== 'object') return null;
+            const directItems = normalisasiItemsLab(val.items || val.hasilItems || val.parameters || val.data);
+            if (directItems.length > 0) {
+                return { ...val, items: directItems };
+            }
+            if (val.latest && typeof val.latest === 'object') {
+                const nested = ekstrakDataLabObjek(val.latest);
+                if (nested) return nested;
+            }
+            return null;
+        }
+
+        function ambilSemuaDataPasien() {
+            const dataAntrean = ambilDataAntrean();
+            arsipkanAntreanKeMasterPasien(dataAntrean);
+            const dataPasien = ambilDataPasienTersimpan();
+            const hasilMap = new Map();
+
+            dataPasien.forEach((item, idx) => {
+                const key = buatKeyPasien(item, idx);
+                hasilMap.set(key, {
+                    key,
+                    nomorTransaksi: item.nomorTransaksi || item.nomorAntrean || `RSCM-${String(idx + 1).padStart(3, '0')}`,
+                    noRm: item.noRm || '-',
+                    nama: item.nama || '-',
+                    tanggalLahir: item.tanggalLahir || '-',
+                    umur: item.umur !== undefined && item.umur !== '' ? item.umur : '-',
+                    jenisKelamin: item.jenisKelamin || '-',
+                    alamat: item.alamat || '-',
+                    jenisPasien: item.jenisPasien || '-',
+                    nomorAsuransi: item.nomorAsuransi || '-',
+                    poliRujukan: item.poliRujukan || item.tujuan || 'Laboratorium',
+                    dokterPengirim: item.dokterPengirim || '-',
+                    tanggalOrder: item.tanggalOrder || item.waktuDaftar || item.tanggalPeriksa || '-'
+                });
+            });
+
+            const hasilTersimpan = JSON.parse(localStorage.getItem(STORAGE_HASIL_LAB)) || {};
+            if (hasilTersimpan && typeof hasilTersimpan === 'object') {
+                Object.entries(hasilTersimpan).forEach(([k, val], idx) => {
+                    const bersih = ekstrakDataLabObjek(val);
+                    if (!bersih) return;
+                    const normRm = normalisasiNoRm(bersih.noRm);
+                    const sudahAda = Array.from(hasilMap.values()).some((p) => {
+                        if (p.key === k) return true;
+                        if (normRm && normalisasiNoRm(p.noRm) === normRm) return true;
+                        if (bersih.nama && normalisasiNama(p.nama) === normalisasiNama(bersih.nama)) return true;
+                        return false;
+                    });
+                    if (!sudahAda) {
+                        hasilMap.set(k, {
+                            key: k,
+                            nomorTransaksi: bersih.nomorTransaksi || bersih.nomorAntrean || `RSCM-LAB-${String(idx + 1).padStart(3, '0')}`,
+                            noRm: bersih.noRm || '-',
+                            nama: bersih.nama || bersih.namaPasien || '-',
+                            tanggalLahir: bersih.tanggalLahir || '-',
+                            umur: bersih.umur !== undefined && bersih.umur !== '' ? bersih.umur : '-',
+                            jenisKelamin: bersih.jenisKelamin || '-',
+                            alamat: bersih.alamat || '-',
+                            jenisPasien: bersih.jenisPasien || '-',
+                            nomorAsuransi: bersih.nomorAsuransi || '-',
+                            poliRujukan: bersih.poliRujukan || bersih.tujuan || 'Laboratorium',
+                            dokterPengirim: bersih.dokterPengirim || '-',
+                            tanggalOrder: bersih.tanggalOrder || bersih.tanggalPeriksa || '-'
+                        });
+                    }
+                });
+            }
+
+            return Array.from(hasilMap.values());
+        }
+
+        function temukanHasilLabUntukPasien(pasien, hasilTersimpan) {
+            if (!hasilTersimpan || typeof hasilTersimpan !== 'object') return null;
+
+            if (pasien && pasien.key && hasilTersimpan[pasien.key]) {
+                const parsed = ekstrakDataLabObjek(hasilTersimpan[pasien.key]);
+                if (parsed) return { key: pasien.key, data: parsed };
+            }
+
+            const normRm = normalisasiNoRm(pasien?.noRm);
+            const normNama = normalisasiNama(pasien?.nama);
+            const normTrx = normalisasiNoRm(pasien?.nomorTransaksi);
+
+            for (const [k, val] of Object.entries(hasilTersimpan)) {
+                const parsed = ekstrakDataLabObjek(val);
+                if (!parsed) continue;
+                const kLower = String(k).toLowerCase();
+                const cocokKey = pasien?.key && (k === pasien.key || k.includes(pasien.key) || (pasien.noRm && k.endsWith(`__${pasien.noRm}`)));
+                const cocokRm = normRm && (
+                    normalisasiNoRm(parsed.noRm) === normRm ||
+                    kLower.endsWith(`__${normRm}`) ||
+                    kLower.includes(`rm-${normRm}`) ||
+                    kLower.includes(normRm)
+                );
+                const cocokTrx = normTrx && (
+                    normalisasiNoRm(parsed.nomorAntrean) === normTrx ||
+                    normalisasiNoRm(parsed.nomorTransaksi) === normTrx
+                );
+                const cocokNama = !normRm && normNama && normalisasiNama(parsed.nama || parsed.namaPasien) === normNama;
+
+                if (cocokKey || cocokRm || cocokTrx || cocokNama) {
+                    return { key: k, data: parsed };
+                }
+            }
+
+            return null;
+        }
+
+        function parseAngka(nilai) {
+            if (nilai === null || nilai === undefined) return null;
+            const bersih = String(nilai).trim().replace(',', '.');
+            if (bersih === '' || bersih === '-') return null;
+            if (!/^[+-]?\d+(\.\d+)?$/.test(bersih)) return null;
+            const num = parseFloat(bersih);
+            return Number.isNaN(num) ? null : num;
+        }
+
+        function evaluasiStatus(namaParam, hasilTeks, meta) {
+            const trimmed = String(hasilTeks ?? '').trim();
+            if (trimmed === '' || trimmed === '-') {
+                return { label: '-', cssClass: 'flag-normal', rowClass: 'row-status-normal' };
+            }
+            const angka = parseAngka(trimmed);
+            if (angka === null || !meta) {
+                return { label: 'Normal', cssClass: 'flag-normal', rowClass: 'row-status-normal' };
+            }
+            if (meta.critLow !== null && meta.critLow !== undefined && angka < meta.critLow) {
+                return { label: 'CRITICAL', cssClass: 'flag-critical', rowClass: 'row-status-critical' };
+            }
+            if (meta.critHigh !== null && meta.critHigh !== undefined && angka > meta.critHigh) {
+                return { label: 'CRITICAL', cssClass: 'flag-critical', rowClass: 'row-status-critical' };
+            }
+            if (meta.minNormal !== null && meta.minNormal !== undefined && angka < meta.minNormal) {
+                return { label: 'Low', cssClass: 'flag-low', rowClass: 'row-status-low' };
+            }
+            if (meta.maxNormal !== null && meta.maxNormal !== undefined && angka > meta.maxNormal) {
+                return { label: 'High', cssClass: 'flag-high', rowClass: 'row-status-high' };
+            }
+            return { label: 'Normal', cssClass: 'flag-normal', rowClass: 'row-status-normal' };
+        }
+
+        function formatTanggalSingkat(nilaiTgl) {
+            if (!nilaiTgl || nilaiTgl === '-') return '-';
+            const d = new Date(nilaiTgl);
+            if (!Number.isNaN(d.getTime()) && String(nilaiTgl).includes('T')) {
+                return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}, ${String(d.getHours()).padStart(2, '0')}.${String(d.getMinutes()).padStart(2, '0')}`;
+            }
+            return nilaiTgl;
+        }
+
+        function bangunHtmlLembarHasil(pasien, dataLab, judulBagian = 'HASIL PEMERIKSAAN LABORATORIUM') {
+            const items = Array.isArray(dataLab.items) ? dataLab.items : [];
+            const barisHtml = items.map((item) => {
+                const def = KATALOG_DEFAULT[item.pemeriksaan] || {};
+                const satuan = item.satuan ?? def.satuan ?? '';
+                const rujukan = item.nilaiRujukan ?? def.rujukan ?? '-';
+                const kritis = item.nilaiKritis ?? def.kritisTeks ?? '-';
+                const metode = item.metode ?? def.metode ?? '-';
+                const status = evaluasiStatus(item.pemeriksaan, item.hasil, def);
+                const labelTampil = item.keterangan || status.label;
+                const nilaiTampil = labelTampil === 'CRITICAL' ? `<strong>${item.hasil}</strong>` : item.hasil;
+
+                return `
+                    <tr class="${item.rowClass || status.rowClass}">
+                        <td>${item.pemeriksaan}</td>
+                        <td>${nilaiTampil}</td>
+                        <td>${satuan}</td>
+                        <td>${rujukan}</td>
+                        <td>${kritis}</td>
+                        <td>${metode}</td>
+                        <td class="${item.cssClass || status.cssClass}">${labelTampil}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const asuransiTampil = pasien.nomorAsuransi && pasien.nomorAsuransi !== '-'
+                ? `${pasien.jenisPasien} (${pasien.nomorAsuransi})`
+                : pasien.jenisPasien;
+
+            const tglOrderTampil = formatTanggalSingkat(pasien.tanggalOrder);
+            const tglPeriksaTampil = formatTanggalSingkat(dataLab.tanggalPeriksa);
+            const pjLab = dataLab.penanggungJawabLab || 'dr. [Nama Dokter Penanggung Jawab], Sp.PK';
+            const drPj = dataLab.dokterPenanggungJawab || dataLab.petugasLaboratorium || 'dr. [Nama Dokter Penanggung Jawab], Sp.PK';
+            const poliTampil = dataLab.poliRujukan || pasien.poliRujukan || 'Laboratorium';
+            const dokterTampil = dataLab.dokterPengirim || pasien.dokterPengirim || '-';
+
+            return `
+                <div class="report-kop">
+                    <div class="report-kop-brand">
+                        <i class="fa-solid fa-hospital"></i>
+                        <span>KEMENTERIAN KESEHATAN REPUBLIK INDONESIA</span>
+                    </div>
+                    <h3>RSUP NASIONAL DR. CIPTO MANGUNKUSUMO</h3>
+                    <p>Jl. Diponegoro No. 71, Jakarta Pusat | Telepon: (021) 1500135 | Website: rscm.co.id</p>
+                </div>
+
+                <div class="report-info-grid">
+                    <div>
+                        <div class="report-info-row"><span class="report-info-label">Pasien</span><span>: ${pasien.nama}</span></div>
+                        <div class="report-info-row"><span class="report-info-label">No. RM</span><span>: ${pasien.noRm}</span></div>
+                        <div class="report-info-row"><span class="report-info-label">Tgl. Lahir</span><span>: ${pasien.tanggalLahir}</span></div>
+                        <div class="report-info-row"><span class="report-info-label">Alamat</span><span>: ${pasien.alamat}</span></div>
+                        <div class="report-info-row"><span class="report-info-label">Usia</span><span>: ${pasien.umur} Tahun</span></div>
+                        <div class="report-info-row"><span class="report-info-label">Jns. Kelamin</span><span>: ${pasien.jenisKelamin}</span></div>
+                        <div class="report-info-row"><span class="report-info-label">Asuransi</span><span>: ${asuransiTampil}</span></div>
+                    </div>
+                    <div>
+                        <div class="report-info-row"><span class="report-info-label">No. Transaksi</span><span>: ${dataLab.nomorAntrean || pasien.nomorTransaksi}</span></div>
+                        <div class="report-info-row"><span class="report-info-label">Tgl. Order</span><span>: ${tglOrderTampil}</span></div>
+                        <div class="report-info-row"><span class="report-info-label">Tgl. Periksa</span><span>: ${tglPeriksaTampil}</span></div>
+                        <div class="report-info-row"><span class="report-info-label">Dokter Pengirim</span><span>: ${dokterTampil}</span></div>
+                        <div class="report-info-row"><span class="report-info-label">PJ Lab</span><span>: ${pjLab}</span></div>
+                        <div class="report-info-row"><span class="report-info-label">Pelayanan</span><span>: ${poliTampil}</span></div>
+                    </div>
+                </div>
+
+                <div class="report-section-heading">${judulBagian}</div>
+
+                <div class="report-table-wrap">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Pemeriksaan</th>
+                                <th>Hasil</th>
+                                <th>Satuan</th>
+                                <th>Nilai Rujukan</th>
+                                <th>Nilai Kritis</th>
+                                <th>Metode</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${barisHtml}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="report-footer-meta">
+                    <div><strong>Dikeluarkan pada:</strong> ${tglPeriksaTampil}</div>
+                    <div><strong>Rumah Sakit:</strong> RSUP Nasional Dr. Cipto Mangunkusumo</div>
+                </div>
+
+                <div class="report-sign-grid">
+                    <div>
+                        <div>Penanggung Jawab Laboratorium</div>
+                        <div class="report-sign-space"></div>
+                        <div><strong>${pjLab}</strong></div>
+                    </div>
+                    <div>
+                        <div>Dokter Pemeriksa / Verifikator</div>
+                        <div class="report-sign-space"></div>
+                        <div><strong>${drPj}</strong></div>
+                    </div>
+                </div>
+
+                <p class="report-disclaimer">
+                    Catatan: Nilai rujukan merupakan default sistem dan dapat berbeda menurut metode, reagen, instrumen, usia, jenis kelamin, dan kebijakan laboratorium. Nilai kritis harus mengikuti SOP laboratorium yang berlaku.
+                </p>
+            `;
+        }
+
+        function renderLembarReadOnly(pasien, dataLab) {
+            kertasCetakHasilLab.innerHTML = bangunHtmlLembarHasil(pasien, dataLab, 'HASIL PEMERIKSAAN LABORATORIUM');
+            kotakHasilLabReadOnly.classList.add('show');
+        }
+
+        btnCekHasilLab.addEventListener('click', function (e) {
+            e.preventDefault();
+            const sedangTerbuka = panelCekHasilLab.classList.contains('show');
+            tutupSemuaPanelLayanan();
+            if (sedangTerbuka) {
+                setMenuCardAktif(null);
+            } else {
+                panelCekHasilLab.classList.add('show');
+                setMenuCardAktif(this);
+                inputNoRmPasien.focus();
+            }
+        });
+
+        btnTutupCekLab.addEventListener('click', function () {
+            panelCekHasilLab.classList.remove('show');
+            if (btnCekHasilLab.classList.contains('menu-card-active')) {
+                setMenuCardAktif(null);
+            }
+        });
+
+        formCariNoRm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const noRmDicari = normalisasiNoRm(inputNoRmPasien.value);
+            pesanCekLab.textContent = '';
+            pesanCekLab.className = 'cek-lab-msg';
+            pasienAktifCekLabKey = null;
+
+            if (!noRmDicari) {
+                kotakHasilLabReadOnly.classList.remove('show');
+                pesanCekLab.textContent = 'Masukkan No. RM pasien terlebih dahulu.';
+                pesanCekLab.classList.add('cek-lab-msg-error');
+                return;
+            }
+
+            const semuaPasien = ambilSemuaDataPasien();
+            const hasilTersimpan = JSON.parse(localStorage.getItem(STORAGE_HASIL_LAB)) || {};
+
+            const pasienCocok = semuaPasien.filter((p) => normalisasiNoRm(p.noRm) === noRmDicari);
+            if (pasienCocok.length === 0) {
+                kotakHasilLabReadOnly.classList.remove('show');
+                pesanCekLab.textContent = `No. RM "${inputNoRmPasien.value.trim()}" tidak ditemukan.`;
+                pesanCekLab.classList.add('cek-lab-msg-error');
+                return;
+            }
+
+            let pasienTerpilih = null;
+            let hasilTerpilih = null;
+
+            for (const p of pasienCocok) {
+                const ditemukan = temukanHasilLabUntukPasien(p, hasilTersimpan);
+                if (ditemukan && Array.isArray(ditemukan.data.items) && ditemukan.data.items.length > 0) {
+                    pasienTerpilih = p;
+                    hasilTerpilih = ditemukan;
+                    break;
+                }
+            }
+
+            if (!pasienTerpilih || !hasilTerpilih) {
+                kotakHasilLabReadOnly.classList.remove('show');
+                pesanCekLab.textContent = `Pasien ${pasienCocok[0].nama} (No. RM: ${pasienCocok[0].noRm}) ditemukan, tetapi hasil laboratorium belum diinput.`;
+                pesanCekLab.classList.add('cek-lab-msg-error');
+                return;
+            }
+
+            pasienAktifCekLabKey = hasilTerpilih.key;
+            pesanCekLab.textContent = `Menampilkan hasil laboratorium untuk ${pasienTerpilih.nama} (No. RM: ${pasienTerpilih.noRm}).`;
+            pesanCekLab.classList.add('cek-lab-msg-ok');
+            renderLembarReadOnly(pasienTerpilih, hasilTerpilih.data);
+        });
+
+        btnBersihkanCekLab.addEventListener('click', function () {
+            inputNoRmPasien.value = '';
+            pesanCekLab.textContent = '';
+            pesanCekLab.className = 'cek-lab-msg';
+            pasienAktifCekLabKey = null;
+            kotakHasilLabReadOnly.classList.remove('show');
+            inputNoRmPasien.focus();
+        });
+
+        btnCetakHasilLab.addEventListener('click', function () {
+            if (!pasienAktifCekLabKey) return;
+            const urlCetak = `print.html?key=${encodeURIComponent(pasienAktifCekLabKey)}`;
+            window.open(urlCetak, '_blank');
+        });
+
+        /* Logika Panel Riwayat Pemeriksaan berdasarkan No. RM */
+        function kumpulkanSesiRiwayatByNoRm(noRmNormal, semuaPasien, hasilTersimpan) {
+            const riwayatMap = JSON.parse(localStorage.getItem(STORAGE_RIWAYAT_LAB)) || {};
+            const bucketKey = `RM__${noRmNormal}`;
+            const sesiList = [];
+
+            if (Array.isArray(riwayatMap[bucketKey])) {
+                riwayatMap[bucketKey].forEach((entry, idx) => {
+                    const parsed = ekstrakDataLabObjek(entry) || entry;
+                    sesiList.push({
+                        ...parsed,
+                        _sesiId: entry.id || `SESI_${idx}`
+                    });
+                });
+            }
+
+            if (sesiList.length === 0) {
+                const pasienCocok = semuaPasien.filter((p) => normalisasiNoRm(p.noRm) === noRmNormal);
+                pasienCocok.forEach((p) => {
+                    const ditemukan = temukanHasilLabUntukPasien(p, hasilTersimpan);
+                    const h = ditemukan ? ditemukan.data : null;
+                    if (h && Array.isArray(h.items) && h.items.length > 0) {
+                        sesiList.push({
+                            _sesiId: `HASIL_${ditemukan.key}`,
+                            nomorAntrean: p.nomorTransaksi,
+                            noRm: p.noRm,
+                            nama: p.nama,
+                            poliRujukan: p.poliRujukan,
+                            dokterPengirim: p.dokterPengirim,
+                            tanggalPeriksa: h.tanggalPeriksa || '-',
+                            penanggungJawabLab: h.penanggungJawabLab,
+                            petugasLaboratorium: h.petugasLaboratorium,
+                            ringkasanStatus: 'Tersimpan',
+                            items: h.items
+                        });
+                    }
+                });
+            }
+
+            return sesiList;
+        }
+
+        btnRiwayatPemeriksaan.addEventListener('click', function (e) {
+            e.preventDefault();
+            const sedangTerbuka = panelRiwayatPemeriksaan.classList.contains('show');
+            tutupSemuaPanelLayanan();
+            if (sedangTerbuka) {
+                setMenuCardAktif(null);
+            } else {
+                panelRiwayatPemeriksaan.classList.add('show');
+                setMenuCardAktif(this);
+                inputNoRmRiwayat.focus();
+            }
+        });
+
+        btnTutupRiwayat.addEventListener('click', function () {
+            panelRiwayatPemeriksaan.classList.remove('show');
+            if (btnRiwayatPemeriksaan.classList.contains('menu-card-active')) {
+                setMenuCardAktif(null);
+            }
+        });
+
+        btnTutupDetailRiwayat.addEventListener('click', function () {
+            kotakDetailRiwayat.classList.remove('show');
+            kertasDetailRiwayat.innerHTML = '';
+        });
+
+        formCariRiwayatNoRm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const noRmRaw = inputNoRmRiwayat.value.trim();
+            const noRmNormal = normalisasiNoRm(noRmRaw);
+
+            pesanRiwayat.textContent = '';
+            pesanRiwayat.className = 'cek-lab-msg';
+            daftarSesiRiwayat.innerHTML = '';
+            kotakDetailRiwayat.classList.remove('show');
+            kertasDetailRiwayat.innerHTML = '';
+
+            if (!noRmNormal) {
+                pesanRiwayat.textContent = 'Masukkan No. RM pasien terlebih dahulu.';
+                pesanRiwayat.classList.add('cek-lab-msg-error');
+                return;
+            }
+
+            const semuaPasien = ambilSemuaDataPasien();
+            const hasilTersimpan = JSON.parse(localStorage.getItem(STORAGE_HASIL_LAB)) || {};
+            const pasienCocok = semuaPasien.filter((p) => normalisasiNoRm(p.noRm) === noRmNormal);
+            const sesiList = kumpulkanSesiRiwayatByNoRm(noRmNormal, semuaPasien, hasilTersimpan);
+
+            if (pasienCocok.length === 0 && sesiList.length === 0) {
+                pesanRiwayat.textContent = `No. RM "${noRmRaw}" tidak ditemukan.`;
+                pesanRiwayat.classList.add('cek-lab-msg-error');
+                return;
+            }
+
+            const infoPasienDasar = pasienCocok[0] || {
+                nama: sesiList[0]?.nama || '-',
+                noRm: sesiList[0]?.noRm || noRmRaw,
+                tanggalLahir: '-',
+                alamat: '-',
+                umur: '-',
+                jenisKelamin: '-',
+                jenisPasien: '-',
+                nomorAsuransi: '-',
+                nomorTransaksi: sesiList[0]?.nomorAntrean || '-',
+                tanggalOrder: sesiList[0]?.tanggalPeriksa || '-',
+                dokterPengirim: sesiList[0]?.dokterPengirim || '-',
+                poliRujukan: sesiList[0]?.poliRujukan || 'Laboratorium'
+            };
+
+            if (sesiList.length === 0) {
+                pesanRiwayat.textContent = `Pasien ${infoPasienDasar.nama} (No. RM: ${infoPasienDasar.noRm}) belum memiliki riwayat hasil pemeriksaan.`;
+                pesanRiwayat.classList.add('cek-lab-msg-error');
+                return;
+            }
+
+            pesanRiwayat.textContent = `Ditemukan ${sesiList.length} riwayat pemeriksaan untuk ${infoPasienDasar.nama} (No. RM: ${infoPasienDasar.noRm}).`;
+            pesanRiwayat.classList.add('cek-lab-msg-ok');
+
+            sesiList.forEach((sesi, index) => {
+                const card = document.createElement('div');
+                card.className = 'riwayat-session-card';
+                card.innerHTML = `
+                    <div class="riwayat-session-meta">
+                        <strong>Riwayat #${sesiList.length - index} &bull; ${sesi.tanggalPeriksa || '-'}</strong>
+                        <span>No. Antrean: <strong>${sesi.nomorAntrean || '-'}</strong> &bull; Poli: ${sesi.poliRujukan || '-'} &bull; Status: <strong>${sesi.ringkasanStatus || 'Tersimpan'}</strong></span>
+                    </div>
+                    <button type="button" class="btn-lihat-riwayat">
+                        <i class="fa-solid fa-eye"></i> Lihat Detail
+                    </button>
+                `;
+
+                card.querySelector('.btn-lihat-riwayat').addEventListener('click', function () {
+                    const pasienGabungan = {
+                        ...infoPasienDasar,
+                        nomorTransaksi: sesi.nomorAntrean || infoPasienDasar.nomorTransaksi,
+                        poliRujukan: sesi.poliRujukan || infoPasienDasar.poliRujukan,
+                        dokterPengirim: sesi.dokterPengirim || infoPasienDasar.dokterPengirim
+                    };
+                    kertasDetailRiwayat.innerHTML = bangunHtmlLembarHasil(
+                        pasienGabungan,
+                        sesi,
+                        `RIWAYAT PEMERIKSAAN LABORATORIUM (${sesi.tanggalPeriksa || '-'})`
+                    );
+                    kotakDetailRiwayat.classList.add('show');
+                    kotakDetailRiwayat.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                });
+
+                daftarSesiRiwayat.appendChild(card);
+            });
+        });
+
+        btnBersihkanRiwayat.addEventListener('click', function () {
+            inputNoRmRiwayat.value = '';
+            pesanRiwayat.textContent = '';
+            pesanRiwayat.className = 'cek-lab-msg';
+            daftarSesiRiwayat.innerHTML = '';
+            kotakDetailRiwayat.classList.remove('show');
+            kertasDetailRiwayat.innerHTML = '';
+            inputNoRmRiwayat.focus();
+        });
+    </script>
+
+</body>
+</html>
